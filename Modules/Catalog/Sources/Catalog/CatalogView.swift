@@ -5,12 +5,15 @@ protocol CatalogInteracting {
 }
 
 public struct CatalogView: View {
+    let interactor: CatalogInteracting?
+    @ObservedObject var viewState: ViewState = ViewState()
+
     public var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Bem vindo ao MovieIA! 👋")
+                        Text("Bem vindo ao Moview App! 👋")
                             .font(.caption)
                             .foregroundColor(.secondary)
 
@@ -119,10 +122,14 @@ public struct CatalogView: View {
             .padding(.vertical)
         }
     }
+
+    final class ViewState: ObservableObject, CatalogDisplaying {
+        // Define any state properties needed for the view
+    }
 }
 
 struct CatalogView_Previews: PreviewProvider {
     static var previews: some View {
-        CatalogView()
+        CatalogView(interactor: nil, viewState: CatalogView.ViewState())
     }
 }
