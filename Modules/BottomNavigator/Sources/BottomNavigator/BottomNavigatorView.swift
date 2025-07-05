@@ -12,17 +12,13 @@ public struct BottomNavigatorView: View {
     
     public var body: some View {
         TabView(selection: $viewState.selectedTab) {
-            ZStack {
-                CatalogConfigurator.configure()
-            }
+            CatalogConfigurator.configure()
             .tabItem {
                 Label("Home", systemImage: "house")
             }
             .tag(BottomNavigator.Tab.catalog)
             
-            ZStack {
-                FavoritesConfigurator.configure()
-            }
+            FavoritesConfigurator.configure()
             .tabItem {
                 Label("Favorites", systemImage: "heart.fill")
             }
@@ -37,7 +33,7 @@ public struct BottomNavigatorView: View {
     }
     
     final class ViewState: ObservableObject, BottomNavigatorDisplaying {
-        @Published var selectedTab: BottomNavigator.Tab = .catalog
+        @State var selectedTab: BottomNavigator.Tab = .catalog
         
         func displayGoToTab(viewModel: BottomNavigator.GoToTab.ViewModel) {
             selectedTab = viewModel.tab

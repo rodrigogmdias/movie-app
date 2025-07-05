@@ -1,7 +1,5 @@
-import UIKit
-
 enum BottomNavigator {
-    enum Tab: Int, CaseIterable {
+    enum Tab {
         case catalog
         case favorites
     }
