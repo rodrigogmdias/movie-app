@@ -66,7 +66,7 @@ public struct FavoritesView: View {
                                 .multilineTextAlignment(.center)
 
                             Button(action: {
-                                // Navegar para o catálogo
+                                NotificationCenter.default.post(name: NSNotification.Name("GoToHome"), object: nil)
                             }) {
                                 Text("Explorar Catálogo")
                                     .font(.subheadline)
