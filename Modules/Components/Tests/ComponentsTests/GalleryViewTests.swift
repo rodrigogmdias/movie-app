@@ -59,7 +59,7 @@ func testGalleryViewDefaultInitialization() {
     // Then
     // Note: Properties are internal, so we can't directly access them in tests
     // This test verifies that the initializer works without throwing
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 }
 
 @Test("GalleryView should initialize with all parameters")
@@ -68,7 +68,7 @@ func testGalleryViewFullInitialization() {
     // Given
     let title = "Test Gallery"
     let movies = [GalleryView.Movie(id: 1, title: "Movie 1", posterURL: nil)]
-    let action = { }
+    let action = {}
 
     // When
     let _ = GalleryView(
@@ -81,7 +81,7 @@ func testGalleryViewFullInitialization() {
     // Then
     // Note: Properties are internal, so we can't directly access them in tests
     // This test verifies that the initializer works without throwing
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 }
 
 // MARK: - GalleryStatus Tests
@@ -142,7 +142,7 @@ func testGalleryViewTitle() {
 
     // Then
     // Note: Title property is internal, test verifies initialization works
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 }
 
 @Test("GalleryView should handle empty movies array")
@@ -157,7 +157,7 @@ func testGalleryViewEmptyMovies() {
 
     // Then
     // Note: Movies property is internal, test verifies initialization works
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 }
 
 @Test("GalleryView should handle multiple movies")
@@ -166,8 +166,10 @@ func testGalleryViewMultipleMovies() {
     // Given
     let title = "Multiple Movies"
     let movies = [
-        GalleryView.Movie(id: 1, title: "Movie 1", posterURL: URL(string: "https://example.com/1.jpg")),
-        GalleryView.Movie(id: 2, title: "Movie 2", posterURL: URL(string: "https://example.com/2.jpg")),
+        GalleryView.Movie(
+            id: 1, title: "Movie 1", posterURL: URL(string: "https://example.com/1.jpg")),
+        GalleryView.Movie(
+            id: 2, title: "Movie 2", posterURL: URL(string: "https://example.com/2.jpg")),
         GalleryView.Movie(id: 3, title: "Movie 3", posterURL: nil),
     ]
 
@@ -176,7 +178,7 @@ func testGalleryViewMultipleMovies() {
 
     // Then
     // Note: Movies property is internal, test verifies initialization works
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 }
 
 // MARK: - Show More Button Tests
@@ -192,7 +194,7 @@ func testGalleryViewNoShowMoreButton() {
 
     // Then
     // Note: ShowMoreButtonAction property is internal, test verifies initialization works
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 }
 
 @Test("GalleryView should show more button when action is provided")
@@ -201,7 +203,7 @@ func testGalleryViewWithShowMoreButton() {
     // Given
     let title = "Test Gallery"
     let movies = [GalleryView.Movie(id: 1, title: "Movie 1", posterURL: nil)]
-    let action = { }
+    let action = {}
 
     // When
     let _ = GalleryView(
@@ -212,7 +214,7 @@ func testGalleryViewWithShowMoreButton() {
 
     // Then
     // Note: ShowMoreButtonAction property is internal, test verifies initialization works
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 }
 
 // MARK: - Edge Cases Tests
@@ -229,7 +231,7 @@ func testGalleryViewLongMovieTitles() {
 
     // Then
     // Note: Movies property is internal, test verifies initialization works
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 }
 
 @Test("GalleryView should handle valid URLs")
@@ -245,7 +247,7 @@ func testGalleryViewValidURL() {
 
     // Then
     // Note: Movies property is internal, test verifies initialization works
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 }
 
 // MARK: - Status Behavior Tests
@@ -261,7 +263,7 @@ func testGalleryViewLoadingStatus() {
 
     // Then
     // Note: Status property is internal, test verifies initialization works
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 }
 
 @Test("GalleryView should maintain loaded status")
@@ -276,7 +278,7 @@ func testGalleryViewLoadedStatus() {
 
     // Then
     // Note: Status property is internal, test verifies initialization works
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 }
 
 @Test("GalleryView should maintain failure status")
@@ -293,7 +295,7 @@ func testGalleryViewFailureStatus() {
 
     // Then
     // Note: Status property is internal, test verifies initialization works
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 }
 
 // MARK: - View State Tests
@@ -306,16 +308,16 @@ func testGalleryViewStatusConsistency() {
 
     // Test loading state
     let _ = GalleryView(title: title, status: .loading, movies: movies)
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 
     // Test loaded state
     let _ = GalleryView(title: title, status: .loaded, movies: movies)
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 
     // Test failure state
     let error = NSError(domain: "Test", code: 1, userInfo: nil)
     let _ = GalleryView(title: title, status: .failure(error), movies: movies)
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 }
 
 // MARK: - Movie Collection Tests
@@ -335,7 +337,7 @@ func testGalleryViewMovieOrder() {
 
     // Then
     // Note: Movies property is internal, test verifies initialization works
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 }
 
 @Test("GalleryView should handle single movie")
@@ -352,5 +354,5 @@ func testGalleryViewSingleMovie() {
 
     // Then
     // Note: Movies property is internal, test verifies initialization works
-    #expect(true) // Test passes if no exception is thrown
+    #expect(true)  // Test passes if no exception is thrown
 }
