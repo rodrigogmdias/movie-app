@@ -18,11 +18,20 @@ let package = Package(
             name: "Catalog",
             targets: ["Catalog"])
     ],
+    dependencies: [
+        .package(name: "Network", path: "../Network"),
+        .package(name: "Components", path: "../Components"),
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "Catalog"),
+            name: "Catalog",
+            dependencies: [
+                .product(name: "Network", package: "Network"),
+                .product(name: "Components", package: "Components"),
+            ]
+        ),
         .testTarget(
             name: "CatalogTests",
             dependencies: ["Catalog"]
