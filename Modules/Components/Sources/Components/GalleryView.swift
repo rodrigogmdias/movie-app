@@ -8,12 +8,13 @@ public struct GalleryView: View {
         case failure(Error)
     }
     
-    public struct Movie: Identifiable {
-        public let id = UUID()
+    public struct Movie: Identifiable, Hashable {
+        public let id: Int
         public let title: String
         public let posterURL: URL?
         
-        public init(title: String, posterURL: URL?) {
+        public init(id: Int, title: String, posterURL: URL?) {
+            self.id = id
             self.title = title
             self.posterURL = posterURL
         }
@@ -23,15 +24,18 @@ public struct GalleryView: View {
     let movies: [Movie]
     let status: GalleryStatus
     let showMoreButtonAction: (() -> Void)?
+    let selectedMovieAction: ((Movie) -> Void)?
     
     public init(title: String,
                 status: GalleryStatus = .loading,
                 movies: [Movie],
+                selectedMovieAction: ((Movie) -> Void)? = nil,
                 showMoreButtonAction: (() -> Void)? = nil,
     ) {
         self.title = title
         self.status = status
         self.movies = movies
+        self.selectedMovieAction = selectedMovieAction
         self.showMoreButtonAction = showMoreButtonAction
     }
     
@@ -66,31 +70,33 @@ public struct GalleryView: View {
                     HStack(spacing: 16) {
                         ForEach(movies) { movie in
                             VStack {
-                                CachedAsyncImage(
-                                    url: movie.posterURL,
-                                    content: { image in
-                                        image.resizable()
-                                    },
-                                    placeholder: {
-                                        Color.gray.opacity(0.3)
-                                    }
-                                )
-                                .frame(width: 120, height: 180)
-                                .overlay(
-                                    Text(movie.title)
-                                        .foregroundColor(.white)
-                                        .font(.caption)
-                                        .lineLimit(2)
-                                        .padding(4)
-                                        .background(Color.black.opacity(0.7))
-                                        .cornerRadius(4)
-                                        .padding(4)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .padding(.bottom, 4),
-                                    alignment: .bottom
-                                )
+                                NavigationLink(value: movie) {
+                                    CachedAsyncImage(
+                                        url: movie.posterURL,
+                                        content: { image in
+                                            image.resizable()
+                                        },
+                                        placeholder: {
+                                            Color.gray.opacity(0.3)
+                                        }
+                                    )
+                                    .frame(width: 120, height: 180)
+                                    .overlay(
+                                        Text(movie.title)
+                                            .foregroundColor(.white)
+                                            .font(.caption)
+                                            .lineLimit(2)
+                                            .padding(4)
+                                            .background(Color.black.opacity(0.7))
+                                            .cornerRadius(4)
+                                            .padding(4)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .padding(.bottom, 4),
+                                        alignment: .bottom
+                                    )
+                                }
+                                .cornerRadius(8)
                             }
-                            .cornerRadius(8)
                         }
                         if let action = showMoreButtonAction {
                             Button(action: action) {
@@ -123,7 +129,6 @@ public struct GalleryView: View {
                 }
                 .padding(.horizontal)
             }
-                
         }
     }
 }
@@ -134,14 +139,17 @@ public struct GalleryView: View {
                     status: .loaded,
                     movies: [
                         GalleryView.Movie(
+                            id: 1,
                             title: "Filme com nome muito grande",
                             posterURL: URL(string: "https://image.tmdb.org/t/p/w500/yQGaui0bQ5Ai3KIFBB45nTeIqad.jpg")
                         ),
                         GalleryView.Movie(
+                            id: 2,
                             title: "Movie 2",
                             posterURL: URL(string: "https://image.tmdb.org/t/p/w500/m5NKltgQqqyoWJNuK18IqEGRG7J.jpg")
                         ),
                         GalleryView.Movie(
+                            id: 3,
                             title: "Movie 3",
                             posterURL: URL(string: "https://image.tmdb.org/t/p/w500/8OP3h80BzIDgmMNANVaYlQ6H4Oc.jpg")
                         )
@@ -150,20 +158,22 @@ public struct GalleryView: View {
                     status: .loaded,
                     movies: [
                         GalleryView.Movie(
+                            id: 1,
                             title: "Filme com nome muito grande",
                             posterURL: URL(string: "https://image.tmdb.org/t/p/w500/yQGaui0bQ5Ai3KIFBB45nTeIqad.jpg")
                         ),
                         GalleryView.Movie(
+                            id: 2,
                             title: "Movie 2",
                             posterURL: URL(string: "https://image.tmdb.org/t/p/w500/m5NKltgQqqyoWJNuK18IqEGRG7J.jpg")
                         ),
                         GalleryView.Movie(
+                            id: 3,
                             title: "Movie 3",
                             posterURL: URL(string: "https://image.tmdb.org/t/p/w500/8OP3h80BzIDgmMNANVaYlQ6H4Oc.jpg")
                         )
-                    ]) {
-                        print("Show more button tapped")
-                    }
+                    ],
+        )
         GalleryView(title: "Filmes em destaque",
                     status: .loading,
                     movies: [])
