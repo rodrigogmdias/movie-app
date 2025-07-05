@@ -6,7 +6,7 @@
 //
 import Network
 
-final class CatalogService {
+final class CatalogService: Sendable {
     private let networkService: Networkable
 
     init(networkService: Networkable = NetworkService()) {

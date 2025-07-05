@@ -23,6 +23,7 @@ enum Catalog {
                 case loaded
                 case failure(Error)
             }
+            
             let movies: [Movie]
             let status: Status
         }

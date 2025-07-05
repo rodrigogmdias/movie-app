@@ -1,8 +1,11 @@
+import Foundation
+
 protocol CatalogPresenting {
     func presetingPopularMovies(viewModel: Catalog.DidLoadPopularMovies.ViewModel)
 }
 
-final class CatalogInteractor: @preconcurrency CatalogInteracting {
+@MainActor
+final class CatalogInteractor: CatalogInteracting {
     private let presenter: CatalogPresenting
     private let service: CatalogService
 
@@ -11,8 +14,7 @@ final class CatalogInteractor: @preconcurrency CatalogInteracting {
         self.service = service
     }
     
-    @MainActor
-    func handleOnAppear(request: Catalog.OnAppear.Request) {
+    func handleOnAppear(request: Catalog.OnAppear.Request) async {
         presenter.presetingPopularMovies(viewModel: .init(movies: [], status: .loading))
         
         Task {

@@ -2,12 +2,12 @@ import SwiftUI
 import Components
 
 protocol CatalogInteracting {
-    func handleOnAppear(request: Catalog.OnAppear.Request)
+    func handleOnAppear(request: Catalog.OnAppear.Request) async
 }
 
 public struct CatalogView: View {
     let interactor: CatalogInteracting?
-    @ObservedObject var viewState: ViewState = ViewState()
+    @ObservedObject var viewState: ViewState
 
     public var body: some View {
         ScrollView {
@@ -109,9 +109,11 @@ public struct CatalogView: View {
             }
             .padding(.vertical)
             .onAppear {
-                interactor?.handleOnAppear(
-                    request: Catalog.OnAppear.Request()
-                )
+                Task {[interactor] in
+                    await interactor?.handleOnAppear(
+                        request: Catalog.OnAppear.Request()
+                    )
+                }
             }
         }
     }
@@ -148,7 +150,7 @@ public struct CatalogView: View {
 }
 
 extension CatalogView.ViewState {
-    @MainActor static let example: CatalogView.ViewState = {
+    nonisolated(unsafe) static let example: CatalogView.ViewState = {
         let viewState = CatalogView.ViewState()
         viewState.popularMovies = [
             Movie(id: 1,
@@ -181,14 +183,14 @@ extension CatalogView.ViewState {
         return viewState
     }()
     
-    @MainActor static let loadingExample: CatalogView.ViewState = {
+    nonisolated(unsafe) static let loadingExample: CatalogView.ViewState = {
         let viewState = CatalogView.ViewState()
         viewState.popularMovies = []
         viewState.popularMoviesStatus = .loading
         return viewState
     }()
     
-    @MainActor static let failureExample: CatalogView.ViewState = {
+    nonisolated(unsafe) static let failureExample: CatalogView.ViewState = {
         let viewState = CatalogView.ViewState()
         viewState.popularMovies = []
         viewState.popularMoviesStatus = .failure(
