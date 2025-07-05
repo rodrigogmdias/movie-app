@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-public protocol Networkable {
+public protocol Networkable: Sendable {
     func sendRequest<T: Decodable>(endpoint: Endpoint) async throws -> T
     func sendRequest<T: Decodable>(
         endpoint: Endpoint, resultHandler: @escaping @Sendable (Result<T, NetworkError>) -> Void)
