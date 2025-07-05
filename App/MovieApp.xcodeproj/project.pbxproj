@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		0313920F2E177F9F00466CD8 /* Favorites in Frameworks */ = {isa = PBXBuildFile; productRef = 0313920E2E177F9F00466CD8 /* Favorites */; };
+		031392162E1887FB00466CD8 /* Network in Frameworks */ = {isa = PBXBuildFile; productRef = 031392152E1887FB00466CD8 /* Network */; };
+		031D7CAF2E198EC600FD2D3B /* Components in Frameworks */ = {isa = PBXBuildFile; productRef = 031D7CAE2E198EC600FD2D3B /* Components */; };
+		031D7CBE2E19A41500FD2D3B /* Session in Frameworks */ = {isa = PBXBuildFile; productRef = 031D7CBD2E19A41500FD2D3B /* Session */; };
+		031D7CCD2E19B43F00FD2D3B /* MovieDetail in Frameworks */ = {isa = PBXBuildFile; productRef = 031D7CCC2E19B43F00FD2D3B /* MovieDetail */; };
 		03B45F292E176945008807EA /* BottomNavigator in Frameworks */ = {isa = PBXBuildFile; productRef = 03B45F282E176945008807EA /* BottomNavigator */; };
 		03B45F2F2E176A9C008807EA /* Catalog in Frameworks */ = {isa = PBXBuildFile; productRef = 03B45F2E2E176A9C008807EA /* Catalog */; };
 /* End PBXBuildFile section */
@@ -30,7 +34,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				03B45F2F2E176A9C008807EA /* Catalog in Frameworks */,
+				031392162E1887FB00466CD8 /* Network in Frameworks */,
 				0313920F2E177F9F00466CD8 /* Favorites in Frameworks */,
+				031D7CCD2E19B43F00FD2D3B /* MovieDetail in Frameworks */,
+				031D7CBE2E19A41500FD2D3B /* Session in Frameworks */,
+				031D7CAF2E198EC600FD2D3B /* Components in Frameworks */,
 				03B45F292E176945008807EA /* BottomNavigator in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -85,6 +93,10 @@
 				03B45F282E176945008807EA /* BottomNavigator */,
 				03B45F2E2E176A9C008807EA /* Catalog */,
 				0313920E2E177F9F00466CD8 /* Favorites */,
+				031392152E1887FB00466CD8 /* Network */,
+				031D7CAE2E198EC600FD2D3B /* Components */,
+				031D7CBD2E19A41500FD2D3B /* Session */,
+				031D7CCC2E19B43F00FD2D3B /* MovieDetail */,
 			);
 			productName = MovieApp;
 			productReference = 036CCE1C2E174D7D00D10ABA /* MovieApp.app */;
@@ -118,6 +130,10 @@
 				03B45F272E176945008807EA /* XCLocalSwiftPackageReference "../Modules/BottomNavigator" */,
 				03B45F2A2E17697D008807EA /* XCLocalSwiftPackageReference "../Modules/Catalog" */,
 				0313920D2E177F9F00466CD8 /* XCLocalSwiftPackageReference "../Modules/Favorites" */,
+				031392142E1887FB00466CD8 /* XCLocalSwiftPackageReference "../Modules/Network" */,
+				031D7CAD2E198EC600FD2D3B /* XCLocalSwiftPackageReference "../Modules/Components" */,
+				031D7CBC2E19A41500FD2D3B /* XCLocalSwiftPackageReference "../Modules/Session" */,
+				031D7CCB2E19B43F00FD2D3B /* XCLocalSwiftPackageReference "../Modules/MovieDetail" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 036CCE1D2E174D7D00D10ABA /* Products */;
@@ -355,6 +371,22 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Modules/Favorites;
 		};
+		031392142E1887FB00466CD8 /* XCLocalSwiftPackageReference "../Modules/Network" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Modules/Network;
+		};
+		031D7CAD2E198EC600FD2D3B /* XCLocalSwiftPackageReference "../Modules/Components" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Modules/Components;
+		};
+		031D7CBC2E19A41500FD2D3B /* XCLocalSwiftPackageReference "../Modules/Session" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Modules/Session;
+		};
+		031D7CCB2E19B43F00FD2D3B /* XCLocalSwiftPackageReference "../Modules/MovieDetail" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Modules/MovieDetail;
+		};
 		03B45F272E176945008807EA /* XCLocalSwiftPackageReference "../Modules/BottomNavigator" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Modules/BottomNavigator;
@@ -369,6 +401,22 @@
 		0313920E2E177F9F00466CD8 /* Favorites */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Favorites;
+		};
+		031392152E1887FB00466CD8 /* Network */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Network;
+		};
+		031D7CAE2E198EC600FD2D3B /* Components */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Components;
+		};
+		031D7CBD2E19A41500FD2D3B /* Session */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Session;
+		};
+		031D7CCC2E19B43F00FD2D3B /* MovieDetail */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MovieDetail;
 		};
 		03B45F282E176945008807EA /* BottomNavigator */ = {
 			isa = XCSwiftPackageProductDependency;
