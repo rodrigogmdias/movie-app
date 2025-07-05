@@ -26,6 +26,10 @@ public struct BottomNavigatorView: View {
                 .tag(Tab.favorites)
         }
         .tint(.red)
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("GoToHome"))) {
+            _ in
+            selectedTab = .home
+        }
     }
 }
 
