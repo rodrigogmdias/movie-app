@@ -117,7 +117,7 @@ public struct CatalogView: View {
                     .padding(.vertical)
                 }
                 .navigationDestination(for: GalleryView.Movie.self) { movie in
-                    MovieDetailConfigurator.configure()
+                    MovieDetailConfigurator.configure(title: movie.title, coverImageUrl: movie.posterURL)
                 }
             }
             .onLoad {

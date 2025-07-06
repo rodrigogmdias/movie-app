@@ -1,6 +1,8 @@
+import Foundation
+
 public struct MovieDetailConfigurator {
-    public static func configure() -> MovieDetailView {
-        let view = MovieDetailView()
+    @MainActor public static func configure(title: String, coverImageUrl: URL?) -> MovieDetailView {
+        let view = MovieDetailView(title: title, coverImageUrl: coverImageUrl)
         return view
     }
 }
