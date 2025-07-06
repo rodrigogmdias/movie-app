@@ -3,23 +3,7 @@ import Testing
 
 @testable import Catalog
 
-@Test func testCatalogOnAppearRequest() async throws {
-    // Given & When
-    let _ = Catalog.OnAppear.Request()
-
-    // Then
-    // Request struct is created successfully (no properties to test)
-    #expect(true)
-}
-
-@Test func testCatalogDidLoadPopularMoviesRequest() async throws {
-    // Given & When
-    let _ = Catalog.DidLoadPopularMovies.Request()
-
-    // Then
-    // Request struct is created successfully (no properties to test)
-    #expect(true)
-}
+// TODO: Remove tests that only test struct initialization without meaningful assertions
 
 @Test func testCatalogDidLoadPopularMoviesResponse() async throws {
     // Given

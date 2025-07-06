@@ -1,6 +1,5 @@
 import Testing
+
 @testable import BottomNavigator
 
-@Test func example() async throws {
-    // Write your test here and use APIs like `#expect(...)` to check expected conditions.
-}
+// TODO: Implement meaningful tests for BottomNavigator module

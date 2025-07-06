@@ -1,6 +1,5 @@
 import Testing
+
 @testable import MovieDetail
 
-@Test func example() async throws {
-    // Write your test here and use APIs like `#expect(...)` to check expected conditions.
-}
+// TODO: Implement meaningful tests for MovieDetail module
