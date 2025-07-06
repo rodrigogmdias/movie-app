@@ -36,7 +36,8 @@ extension CatalogEndpoint: Endpoint {
         switch self {
         case .popular:
             return [
-                "api_key": "052969f23bc6cb32135ec7d21bdea2ed"
+                "api_key": "052969f23bc6cb32135ec7d21bdea2ed",
+                "language": "pt-BR",
             ]
         }
     }
