@@ -1,5 +1,5 @@
 enum BottomNavigator {
-    enum Tab {
+    enum Tab: Int {
         case catalog
         case favorites
     }
