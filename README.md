@@ -1,6 +1,29 @@
 # 🎬 MovieApp
 
-Um aplicativo iOS moderno para explorar e descobrir filmes, construído com Swift e arquitetura modular baseada em VIPER.
+Um aplicativo iOS moderno para explor       ├── 📚 Catalog/        # Catálogo de filmes
+       │   ├── CatalogConfigurator.swift
+       │   ├── CatalogView.swift
+       │   ├── CatalogPresenter.swift
+       │   ├── CatalogInteractor.swift
+       │   ├── CatalogModels.swift
+       │   ├── Views/
+       │   │   ├── CatalogLoadedView.swift
+       │   │   └── CatalogLoadingView.swift
+       │   └── Data/
+       │
+       ├── ❤️ Favorites/      # Gerenciamento de favoritos
+       │   ├── FavoritesConfigurator.swift
+       │   ├── FavoritesView.swift
+       │   └── Views/
+       │       ├── FavoritesLoadedView.swift
+       │       └── FavoritesLoadingView.swift
+       │
+       └── 🎭 MovieDetail/    # Detalhes do filme
+           ├── MovieDetailConfigurator.swift
+           ├── MovieDetailView.swift
+           └── Views/
+               ├── MovieDetailLoadedView.swift
+               └── MovieDetailLoadingView.swiftfilmes, construído com Swift e arquitetura modular baseada em VIPER.
 
 ## ✨ Características
 
@@ -76,6 +99,15 @@ Cada feature segue o padrão VIPER:
 - **Presenter**: Coordena a comunicação entre View e Interactor
 - **Entity**: Modelos de dados
 - **Router/Configurator**: Configuração e navegação entre módulos
+
+### 📱 Estrutura de Views
+
+Cada feature pode conter uma pasta **Views/** com diferentes estados da interface:
+
+- **LoadedView**: Interface exibida quando os dados estão carregados
+- **LoadingView**: Interface exibida durante o carregamento dos dados
+
+Esta separação permite melhor organização e reutilização de componentes visuais específicos para cada estado da aplicação.
 
 ### 🔗 Dependências entre Módulos
 
@@ -230,7 +262,11 @@ ModuleName/
 │       ├── ModuleView.swift
 │       ├── ModulePresenter.swift
 │       ├── ModuleInteractor.swift
-│       └── ModuleModels.swift
+│       ├── ModuleModels.swift
+│       ├── Views/
+│       │   ├── ModuleLoadedView.swift
+│       │   └── ModuleLoadingView.swift
+│       └── Data/
 └── Tests/
     └── ModuleNameTests/
         ├── ModuleNameTests.swift
