@@ -131,7 +131,10 @@ public struct CatalogView: View {
             }
             .navigationDestination(for: GalleryView.Movie.self) { movie in
                 MovieDetailConfigurator.configure(
-                    title: movie.title, coverImageUrl: movie.posterURL)
+                    id: movie.id,
+                    title: movie.title,
+                    coverImageUrl: movie.posterURL
+                )
             }
         }
     }
