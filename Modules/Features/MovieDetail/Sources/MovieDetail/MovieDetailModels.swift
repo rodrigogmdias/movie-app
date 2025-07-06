@@ -20,7 +20,7 @@ public enum MovieDetail {
             let cast: [CastMember]?
         }
 
-        struct CastMember {
+        struct CastMember: Identifiable {
             let id: Int
             let name: String
             let character: String?
