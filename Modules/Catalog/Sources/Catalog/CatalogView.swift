@@ -120,7 +120,7 @@ public struct CatalogView: View {
                     MovieDetailConfigurator.configure(title: movie.title, coverImageUrl: movie.posterURL)
                 }
             }
-            .onLoad {
+            .onAppear() {
                 Task {[interactor] in
                     await interactor?.handleOnAppear(
                         request: Catalog.OnAppear.Request()
@@ -212,30 +212,4 @@ extension CatalogView.ViewState {
         )
         return viewState
     }()
-}
-
-extension View {
-    func onLoad(perform action: (() -> Void)? = nil) -> some View {
-        modifier(ViewDidLoadModifier(perform: action))
-    }
-}
-
-struct ViewDidLoadModifier: ViewModifier {
-
-    @State private var didLoad = false
-    private let action: (() -> Void)?
-
-    init(perform action: (() -> Void)? = nil) {
-        self.action = action
-    }
-
-    func body(content: Content) -> some View {
-        content.onAppear {
-            if didLoad == false {
-                didLoad = true
-                action?()
-            }
-        }
-    }
-
 }
