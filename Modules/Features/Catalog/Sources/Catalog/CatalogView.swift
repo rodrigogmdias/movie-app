@@ -37,13 +37,6 @@ public struct CatalogView: View {
                 )
             }
         }
-        .navigationDestination(for: GalleryView.Movie.self) { movie in
-            MovieDetailConfigurator.configure(
-                id: movie.id,
-                title: movie.title,
-                coverImageUrl: movie.posterURL
-            )
-        }
     }
     
     final class ViewState: ObservableObject, CatalogDisplaying {

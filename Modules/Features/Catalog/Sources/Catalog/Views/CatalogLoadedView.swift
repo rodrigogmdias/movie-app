@@ -110,6 +110,13 @@ struct CatalogLoadedView: View {
             }
             .padding(.vertical)
         }
+        .navigationDestination(for: GalleryView.Movie.self) { movie in
+            MovieDetailConfigurator.configure(
+                id: movie.id,
+                title: movie.title,
+                coverImageUrl: movie.posterURL
+            )
+        }
     }
 }
 
