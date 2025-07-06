@@ -10,13 +10,14 @@ public struct MovieDetailView: View {
     private let releaseDate: String
     private let director: String
     private let cast: [String]
-    
+
     @Environment(\.presentationMode) var presentationMode
-    
+
     public init(
         title: String,
         coverImageUrl: URL? = nil,
-        synopsis: String = "Uma história envolvente que cativa o público com sua narrativa única e personagens memoráveis.",
+        synopsis: String =
+            "Uma história envolvente que cativa o público com sua narrativa única e personagens memoráveis.",
         rating: Double = 8.5,
         duration: String = "2h 30min",
         genres: [String] = ["Drama", "Crime"],
@@ -34,11 +35,11 @@ public struct MovieDetailView: View {
         self.director = director
         self.cast = cast
     }
-    
+
     private func handleBackAction() {
         presentationMode.wrappedValue.dismiss()
     }
-    
+
     public var body: some View {
         ZStack(alignment: .topLeading) {
             ScrollView {
@@ -46,7 +47,7 @@ public struct MovieDetailView: View {
                     GeometryReader { geometry in
                         let offset = geometry.frame(in: .named("scrollView")).minY
                         let height: CGFloat = 400
-                        
+
                         if let coverImageUrl = coverImageUrl {
                             AsyncImage(url: coverImageUrl) { image in
                                 image
@@ -76,14 +77,14 @@ public struct MovieDetailView: View {
                         }
                     }
                     .frame(height: 400)
-                    
+
                     VStack(alignment: .leading, spacing: 16) {
                         Text(title)
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .padding(.horizontal)
                             .padding(.top)
-                        
+
                         HStack(spacing: 20) {
                             HStack(spacing: 4) {
                                 Image(systemName: "star.fill")
@@ -91,23 +92,23 @@ public struct MovieDetailView: View {
                                 Text(String(format: "%.1f", rating))
                                     .fontWeight(.semibold)
                             }
-                            
+
                             HStack(spacing: 4) {
                                 Image(systemName: "clock")
                                     .foregroundColor(.blue)
                                 Text(duration)
                             }
-                            
+
                             HStack(spacing: 4) {
                                 Image(systemName: "calendar")
                                     .foregroundColor(.green)
                                 Text(releaseDate)
                             }
-                            
+
                             Spacer()
                         }
                         .padding(.horizontal)
-                        
+
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 8) {
                                 ForEach(genres, id: \.self) { genre in
@@ -122,7 +123,7 @@ public struct MovieDetailView: View {
                             }
                             .padding(.horizontal)
                         }
-                        
+
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
                                 Text("📖 Sinopse")
@@ -130,14 +131,14 @@ public struct MovieDetailView: View {
                                     .fontWeight(.semibold)
                                 Spacer()
                             }
-                            
+
                             Text(synopsis)
                                 .font(.body)
                                 .lineLimit(nil)
                                 .multilineTextAlignment(.leading)
                         }
                         .padding(.horizontal)
-                        
+
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
                                 Text("🎬 Diretor")
@@ -145,12 +146,12 @@ public struct MovieDetailView: View {
                                     .fontWeight(.semibold)
                                 Spacer()
                             }
-                            
+
                             Text(director)
                                 .font(.body)
                         }
                         .padding(.horizontal)
-                        
+
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
                                 Text("🎭 Elenco Principal")
@@ -158,14 +159,14 @@ public struct MovieDetailView: View {
                                     .fontWeight(.semibold)
                                 Spacer()
                             }
-                            
+
                             ForEach(cast, id: \.self) { actor in
                                 Text("• \(actor)")
                                     .font(.body)
                             }
                         }
                         .padding(.horizontal)
-                        
+
                         HStack(spacing: 16) {
                             Button(action: {}) {
                                 HStack {
@@ -179,7 +180,7 @@ public struct MovieDetailView: View {
                                 .background(Color.red)
                                 .cornerRadius(8)
                             }
-                            
+
                             Button(action: {}) {
                                 HStack {
                                     Image(systemName: "heart")
@@ -199,7 +200,7 @@ public struct MovieDetailView: View {
                 }
             }
             .coordinateSpace(name: "scrollView")
-            
+
             Button(action: handleBackAction) {
                 HStack(spacing: 6) {
                     Image(systemName: "chevron.left")
@@ -224,7 +225,9 @@ public struct MovieDetailView: View {
             .padding(.leading, 20)
         }
         .edgesIgnoringSafeArea(.top)
-        .navigationBarHidden(true)
+        #if os(iOS) || os(watchOS) || os(tvOS)
+            .navigationBarHidden(true)
+        #endif
         .gesture(
             DragGesture()
                 .onEnded { value in
@@ -234,14 +237,16 @@ public struct MovieDetailView: View {
                 }
         )
     }
-    
+
 }
 
 #Preview {
     MovieDetailView(
         title: "The Shawshank Redemption",
-        coverImageUrl: URL(string: "https://image.tmdb.org/t/p/w500/m5NKltgQqqyoWJNuK18IqEGRG7J.jpg"),
-        synopsis: "Dois homens presos se unem ao longo de vários anos, encontrando consolo e eventual redenção através de atos de decência comum. Uma história tocante sobre amizade, esperança e a capacidade humana de encontrar luz mesmo nas circunstâncias mais sombrias.",
+        coverImageUrl: URL(
+            string: "https://image.tmdb.org/t/p/w500/m5NKltgQqqyoWJNuK18IqEGRG7J.jpg"),
+        synopsis:
+            "Dois homens presos se unem ao longo de vários anos, encontrando consolo e eventual redenção através de atos de decência comum. Uma história tocante sobre amizade, esperança e a capacidade humana de encontrar luz mesmo nas circunstâncias mais sombrias.",
         rating: 9.3,
         duration: "2h 22min",
         genres: ["Drama", "Crime"],
