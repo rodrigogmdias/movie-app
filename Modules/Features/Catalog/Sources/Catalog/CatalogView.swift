@@ -23,123 +23,31 @@ public struct CatalogView: View {
     
     public var body: some View {
         NavigationStack {
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 16) {
-                    HStack {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Bem vindo ao Movie App! 👋")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            
-                            Text("Vamos explorar o catálogo de filmes?")
-                                .font(.body)
-                                .foregroundColor(.primary)
-                        }
-                        Spacer()
-                        Circle()
-                            .fill(Color.red)
-                            .frame(width: 50, height: 50)
-                            .overlay(
-                                Image(systemName: "film")
-                                    .foregroundColor(.white)
-                            )
+            if viewState.isLoading {
+                CatalogLoadingView()
+            } else {
+                CatalogLoadedView(
+                    viewState: viewState,
+                    selectedMovieAction: { movie in
+                        print("Filme selecionado: \(movie.title)")
+                    },
+                    showMoreButtonAction: {
+                        print("Ver mais filmes em destaque")
                     }
-                    .padding(.horizontal)
-                    
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(.gray)
-                        TextField("Buscar filmes...", text: .constant(""))
-                            .textFieldStyle(PlainTextFieldStyle())
-                    }
-                    .padding(10)
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(10)
-                    .padding(.horizontal)
-                    
-                    GalleryView(
-                        title: "Filmes em destaque",
-                        status: viewState.popularMoviesStatus,
-                        movies: viewState.popularMovies.map { movie in
-                            GalleryView.Movie(
-                                id: movie.id,
-                                title: movie.title,
-                                posterURL: movie.posterURL()
-                            )
-                        },
-                        selectedMovieAction: { movie in
-                            print("Filme selecionado: \(movie.title)")
-                        },
-                        showMoreButtonAction: {
-                            print("Ver mais filmes em destaque")
-                        }
-                    )
-                    
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text("Generos")
-                            .font(.headline)
-                            .padding(.horizontal)
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 16) {
-                                ForEach(
-                                    [
-                                        "Ação", "Comédia", "Drama", "Terror",
-                                        "Ficção Científica",
-                                    ],
-                                    id: \.self
-                                ) { category in
-                                    Text(category)
-                                        .padding(10)
-                                        .background(Color.red.opacity(0.1))
-                                        .cornerRadius(8)
-                                        .foregroundColor(.red)
-                                }
-                            }
-                            .padding(.horizontal)
-                        }
-                    }
-                    
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text("Mais vistos")
-                            .font(.headline)
-                            .padding(.horizontal)
-                        
-                        ForEach(0..<5, id: \.self) { index in
-                            HStack {
-                                Rectangle()
-                                    .fill(Color.gray.opacity(0.3))
-                                    .frame(width: 60, height: 90)
-                                    .cornerRadius(8)
-                                
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text("Filme \(index + 1)")
-                                        .font(.subheadline)
-                                        .foregroundColor(.primary)
-                                    
-                                    Text("Descrição breve do filme.")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                }
-                                Spacer()
-                            }
-                            .padding(.horizontal)
-                        }
-                    }
-                }
-                .padding(.vertical)
-            }
-            .navigationDestination(for: GalleryView.Movie.self) { movie in
-                MovieDetailConfigurator.configure(
-                    id: movie.id,
-                    title: movie.title,
-                    coverImageUrl: movie.posterURL
                 )
             }
+        }
+        .navigationDestination(for: GalleryView.Movie.self) { movie in
+            MovieDetailConfigurator.configure(
+                id: movie.id,
+                title: movie.title,
+                coverImageUrl: movie.posterURL
+            )
         }
     }
     
     final class ViewState: ObservableObject, CatalogDisplaying {
+        @Published var isLoading: Bool = true
         @Published var popularMovies: [Movie] = []
         @Published var popularMoviesStatus: GalleryView.GalleryStatus = .loading
         
@@ -149,10 +57,13 @@ public struct CatalogView: View {
             switch viewModel.status {
             case .loading:
                 popularMoviesStatus = .loading
+                isLoading = true
             case .loaded:
                 popularMoviesStatus = .loaded
+                isLoading = false
             case .failure(let error):
                 popularMoviesStatus = .failure(error)
+                isLoading = false
             }
         }
     }
@@ -173,6 +84,7 @@ public struct CatalogView: View {
 extension CatalogView.ViewState {
     nonisolated(unsafe) static let example: CatalogView.ViewState = {
         let viewState = CatalogView.ViewState()
+        viewState.isLoading = false
         viewState.popularMovies = [
             Movie(
                 id: 1,
@@ -211,6 +123,7 @@ extension CatalogView.ViewState {
     
     nonisolated(unsafe) static let loadingExample: CatalogView.ViewState = {
         let viewState = CatalogView.ViewState()
+        viewState.isLoading = true
         viewState.popularMovies = []
         viewState.popularMoviesStatus = .loading
         return viewState
@@ -218,6 +131,7 @@ extension CatalogView.ViewState {
     
     nonisolated(unsafe) static let failureExample: CatalogView.ViewState = {
         let viewState = CatalogView.ViewState()
+        viewState.isLoading = false
         viewState.popularMovies = []
         viewState.popularMoviesStatus = .failure(
             NSError(
