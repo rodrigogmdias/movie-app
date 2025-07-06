@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "MovieDetail",
+    name: "Catalog",
     platforms: [
         .iOS(.v16),
         .macOS(.v13),
@@ -12,24 +12,26 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "MovieDetail",
-            targets: ["MovieDetail"])
+            name: "Catalog",
+            targets: ["Catalog"])
     ],
     dependencies: [
-        .package(name: "Network", path: "../Network"),
-        .package(name: "Components", path: "../Components"),
+        .package(name: "Network", path: "../../Commons/Network"),
+        .package(name: "Components", path: "../../Commons/Components"),
+        .package(name: "MovieDetail", path: "../MovieDetail"),
     ],
     targets: [
         .target(
-            name: "MovieDetail",
+            name: "Catalog",
             dependencies: [
                 .product(name: "Network", package: "Network"),
                 .product(name: "Components", package: "Components"),
+                .product(name: "MovieDetail", package: "MovieDetail"),
             ]
         ),
         .testTarget(
-            name: "MovieDetailTests",
-            dependencies: ["MovieDetail"]
+            name: "CatalogTests",
+            dependencies: ["Catalog"]
         ),
     ]
 )

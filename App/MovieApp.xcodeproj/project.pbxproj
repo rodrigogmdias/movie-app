@@ -130,14 +130,14 @@
 			mainGroup = 036CCE132E174D7D00D10ABA;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				03B45F272E176945008807EA /* XCLocalSwiftPackageReference "../Modules/BottomNavigator" */,
-				03B45F2A2E17697D008807EA /* XCLocalSwiftPackageReference "../Modules/Catalog" */,
-				0313920D2E177F9F00466CD8 /* XCLocalSwiftPackageReference "../Modules/Favorites" */,
-				031392142E1887FB00466CD8 /* XCLocalSwiftPackageReference "../Modules/Network" */,
-				031D7CAD2E198EC600FD2D3B /* XCLocalSwiftPackageReference "../Modules/Components" */,
-				031D7CBC2E19A41500FD2D3B /* XCLocalSwiftPackageReference "../Modules/Session" */,
-				031D7CCB2E19B43F00FD2D3B /* XCLocalSwiftPackageReference "../Modules/MovieDetail" */,
-				031D7CEE2E1A1C6100FD2D3B /* XCLocalSwiftPackageReference "../Modules/SharedPreferences" */,
+				03B45F272E176945008807EA /* XCLocalSwiftPackageReference "../Modules/Features/BottomNavigator" */,
+				03B45F2A2E17697D008807EA /* XCLocalSwiftPackageReference "../Modules/Features/Catalog" */,
+				0313920D2E177F9F00466CD8 /* XCLocalSwiftPackageReference "../Modules/Features/Favorites" */,
+				031392142E1887FB00466CD8 /* XCLocalSwiftPackageReference "../Modules/Commons/Network" */,
+				031D7CAD2E198EC600FD2D3B /* XCLocalSwiftPackageReference "../Modules/Commons/Components" */,
+				031D7CBC2E19A41500FD2D3B /* XCLocalSwiftPackageReference "../Modules/Commons/Session" */,
+				031D7CCB2E19B43F00FD2D3B /* XCLocalSwiftPackageReference "../Modules/Features/MovieDetail" */,
+				031D7CEE2E1A1C6100FD2D3B /* XCLocalSwiftPackageReference "../Modules/Commons/SharedPreferences" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 036CCE1D2E174D7D00D10ABA /* Products */;
@@ -371,37 +371,37 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		0313920D2E177F9F00466CD8 /* XCLocalSwiftPackageReference "../Modules/Favorites" */ = {
+		0313920D2E177F9F00466CD8 /* XCLocalSwiftPackageReference "../Modules/Features/Favorites" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../Modules/Favorites;
+			relativePath = ../Modules/Features/Favorites;
 		};
-		031392142E1887FB00466CD8 /* XCLocalSwiftPackageReference "../Modules/Network" */ = {
+		031392142E1887FB00466CD8 /* XCLocalSwiftPackageReference "../Modules/Commons/Network" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../Modules/Network;
+			relativePath = ../Modules/Commons/Network;
 		};
-		031D7CAD2E198EC600FD2D3B /* XCLocalSwiftPackageReference "../Modules/Components" */ = {
+		031D7CAD2E198EC600FD2D3B /* XCLocalSwiftPackageReference "../Modules/Commons/Components" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../Modules/Components;
+			relativePath = ../Modules/Commons/Components;
 		};
-		031D7CBC2E19A41500FD2D3B /* XCLocalSwiftPackageReference "../Modules/Session" */ = {
+		031D7CBC2E19A41500FD2D3B /* XCLocalSwiftPackageReference "../Modules/Commons/Session" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../Modules/Session;
+			relativePath = ../Modules/Commons/Session;
 		};
-		031D7CCB2E19B43F00FD2D3B /* XCLocalSwiftPackageReference "../Modules/MovieDetail" */ = {
+		031D7CCB2E19B43F00FD2D3B /* XCLocalSwiftPackageReference "../Modules/Features/MovieDetail" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../Modules/MovieDetail;
+			relativePath = ../Modules/Features/MovieDetail;
 		};
-		031D7CEE2E1A1C6100FD2D3B /* XCLocalSwiftPackageReference "../Modules/SharedPreferences" */ = {
+		031D7CEE2E1A1C6100FD2D3B /* XCLocalSwiftPackageReference "../Modules/Commons/SharedPreferences" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../Modules/SharedPreferences;
+			relativePath = ../Modules/Commons/SharedPreferences;
 		};
-		03B45F272E176945008807EA /* XCLocalSwiftPackageReference "../Modules/BottomNavigator" */ = {
+		03B45F272E176945008807EA /* XCLocalSwiftPackageReference "../Modules/Features/BottomNavigator" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../Modules/BottomNavigator;
+			relativePath = ../Modules/Features/BottomNavigator;
 		};
-		03B45F2A2E17697D008807EA /* XCLocalSwiftPackageReference "../Modules/Catalog" */ = {
+		03B45F2A2E17697D008807EA /* XCLocalSwiftPackageReference "../Modules/Features/Catalog" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../Modules/Catalog;
+			relativePath = ../Modules/Features/Catalog;
 		};
 /* End XCLocalSwiftPackageReference section */
 
