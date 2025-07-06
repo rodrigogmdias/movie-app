@@ -1,7 +1,6 @@
 import SwiftUI
 
 protocol FavoritesInteracting {
-    // Define methods for interaction with favorites
 }
 
 public struct FavoritesView: View {
@@ -25,7 +24,6 @@ public struct FavoritesView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    // Header
                     HStack {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Seus Favoritos ❤️")
@@ -39,7 +37,6 @@ public struct FavoritesView: View {
                         }
                         Spacer()
                         Button(action: {
-                            // Ação para editar lista
                         }) {
                             Image(systemName: "square.and.pencil")
                                 .font(.title2)
@@ -50,7 +47,6 @@ public struct FavoritesView: View {
                     .padding(.top)
 
                     if favorites.isEmpty {
-                        // Empty state
                         VStack(spacing: 16) {
                             Image(systemName: "heart.slash")
                                 .font(.system(size: 60))
@@ -66,7 +62,8 @@ public struct FavoritesView: View {
                                 .multilineTextAlignment(.center)
 
                             Button(action: {
-                                NotificationCenter.default.post(name: NSNotification.Name("GoToHome"), object: nil)
+                                NotificationCenter.default.post(
+                                    name: NSNotification.Name("GoToHome"), object: nil)
                             }) {
                                 Text("Explorar Catálogo")
                                     .font(.subheadline)
@@ -81,7 +78,6 @@ public struct FavoritesView: View {
                         }
                         .padding(.vertical, 60)
                     } else {
-                        // Favorites grid
                         LazyVGrid(
                             columns: Array(repeating: GridItem(.flexible()), count: 2),
                             spacing: 16
@@ -92,7 +88,6 @@ public struct FavoritesView: View {
                         }
                         .padding(.horizontal)
 
-                        // Quick actions section
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Ações Rápidas")
                                 .font(.headline)
@@ -119,7 +114,6 @@ public struct FavoritesView: View {
                 }
             }
             .refreshable {
-                // Refresh favorites
             }
         }
         .alert("Remover dos Favoritos", isPresented: $showingDeleteConfirmation) {
@@ -137,7 +131,6 @@ public struct FavoritesView: View {
     @ViewBuilder
     private func favoriteMovieCard(movie: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            // Movie poster placeholder
             Rectangle()
                 .fill(Color.gray.opacity(0.3))
                 .frame(height: 200)
@@ -156,7 +149,6 @@ public struct FavoritesView: View {
                 )
                 .cornerRadius(12)
                 .overlay(
-                    // Favorite heart button
                     Button(action: {
                         confirmRemoval(movie)
                     }) {
@@ -173,7 +165,6 @@ public struct FavoritesView: View {
                     alignment: .topTrailing
                 )
 
-            // Movie info
             VStack(alignment: .leading, spacing: 4) {
                 Text(movie)
                     .font(.subheadline)
@@ -247,7 +238,6 @@ public struct FavoritesView: View {
     }
 
     private func shareList() {
-        // Implementar compartilhamento da lista
         print("Compartilhando lista de favoritos")
     }
 

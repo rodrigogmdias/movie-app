@@ -1,9 +1,3 @@
-//
-//  MovieResponse.swift
-//  Catalog
-//
-//  Created by Rodrigo Dias on 05/07/25.
-//
 import Foundation
 
 struct Movie: Decodable {

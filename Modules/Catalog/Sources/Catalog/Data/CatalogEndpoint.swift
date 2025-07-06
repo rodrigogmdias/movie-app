@@ -1,9 +1,3 @@
-//
-//  CatalogEndpoint.swift
-//  Catalog
-//
-//  Created by Rodrigo Dias on 05/07/25.
-//
 import Network
 
 enum CatalogEndpoint {
@@ -14,15 +8,15 @@ extension CatalogEndpoint: Endpoint {
     var scheme: String {
         return "https"
     }
-    
-    var header: [String : String]? {
+
+    var header: [String: String]? {
         return nil
     }
-    
+
     var authToken: String? {
         return nil
     }
-    
+
     var host: String {
         return "api.themoviedb.org"
     }

@@ -1,12 +1,5 @@
-//
-//  MovieAppApp.swift
-//  MovieApp
-//
-//  Created by Rodrigo Dias on 03/07/25.
-//
-
-import SwiftUI
 import BottomNavigator
+import SwiftUI
 
 @main
 struct MovieApp: App {

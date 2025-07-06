@@ -1,9 +1,3 @@
-//
-//  CatalogService.swift
-//  Catalog
-//
-//  Created by Rodrigo Dias on 05/07/25.
-//
 import Network
 
 final class CatalogService: Sendable {
@@ -12,7 +6,7 @@ final class CatalogService: Sendable {
     init(networkService: Networkable = NetworkService()) {
         self.networkService = networkService
     }
-    
+
     func getPopularMovies() async throws -> MovieResponse {
         return try await networkService.sendRequest(endpoint: CatalogEndpoint.popular)
     }
