@@ -225,6 +225,7 @@ public struct MovieDetailView: View {
             .padding(.leading, 20)
         }
         .edgesIgnoringSafeArea(.top)
+        .scrollIndicators(.hidden)
         #if os(iOS) || os(watchOS) || os(tvOS)
             .navigationBarHidden(true)
         #endif
