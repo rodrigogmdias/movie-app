@@ -12,6 +12,7 @@
 		031D7CAF2E198EC600FD2D3B /* Components in Frameworks */ = {isa = PBXBuildFile; productRef = 031D7CAE2E198EC600FD2D3B /* Components */; };
 		031D7CBE2E19A41500FD2D3B /* Session in Frameworks */ = {isa = PBXBuildFile; productRef = 031D7CBD2E19A41500FD2D3B /* Session */; };
 		031D7CCD2E19B43F00FD2D3B /* MovieDetail in Frameworks */ = {isa = PBXBuildFile; productRef = 031D7CCC2E19B43F00FD2D3B /* MovieDetail */; };
+		031D7CF02E1A1C6100FD2D3B /* SharedPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 031D7CEF2E1A1C6100FD2D3B /* SharedPreferences */; };
 		03B45F292E176945008807EA /* BottomNavigator in Frameworks */ = {isa = PBXBuildFile; productRef = 03B45F282E176945008807EA /* BottomNavigator */; };
 		03B45F2F2E176A9C008807EA /* Catalog in Frameworks */ = {isa = PBXBuildFile; productRef = 03B45F2E2E176A9C008807EA /* Catalog */; };
 /* End PBXBuildFile section */
@@ -35,6 +36,7 @@
 			files = (
 				03B45F2F2E176A9C008807EA /* Catalog in Frameworks */,
 				031392162E1887FB00466CD8 /* Network in Frameworks */,
+				031D7CF02E1A1C6100FD2D3B /* SharedPreferences in Frameworks */,
 				0313920F2E177F9F00466CD8 /* Favorites in Frameworks */,
 				031D7CCD2E19B43F00FD2D3B /* MovieDetail in Frameworks */,
 				031D7CBE2E19A41500FD2D3B /* Session in Frameworks */,
@@ -97,6 +99,7 @@
 				031D7CAE2E198EC600FD2D3B /* Components */,
 				031D7CBD2E19A41500FD2D3B /* Session */,
 				031D7CCC2E19B43F00FD2D3B /* MovieDetail */,
+				031D7CEF2E1A1C6100FD2D3B /* SharedPreferences */,
 			);
 			productName = MovieApp;
 			productReference = 036CCE1C2E174D7D00D10ABA /* MovieApp.app */;
@@ -134,6 +137,7 @@
 				031D7CAD2E198EC600FD2D3B /* XCLocalSwiftPackageReference "../Modules/Components" */,
 				031D7CBC2E19A41500FD2D3B /* XCLocalSwiftPackageReference "../Modules/Session" */,
 				031D7CCB2E19B43F00FD2D3B /* XCLocalSwiftPackageReference "../Modules/MovieDetail" */,
+				031D7CEE2E1A1C6100FD2D3B /* XCLocalSwiftPackageReference "../Modules/SharedPreferences" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 036CCE1D2E174D7D00D10ABA /* Products */;
@@ -387,6 +391,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Modules/MovieDetail;
 		};
+		031D7CEE2E1A1C6100FD2D3B /* XCLocalSwiftPackageReference "../Modules/SharedPreferences" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Modules/SharedPreferences;
+		};
 		03B45F272E176945008807EA /* XCLocalSwiftPackageReference "../Modules/BottomNavigator" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Modules/BottomNavigator;
@@ -417,6 +425,10 @@
 		031D7CCC2E19B43F00FD2D3B /* MovieDetail */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MovieDetail;
+		};
+		031D7CEF2E1A1C6100FD2D3B /* SharedPreferences */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SharedPreferences;
 		};
 		03B45F282E176945008807EA /* BottomNavigator */ = {
 			isa = XCSwiftPackageProductDependency;
