@@ -1,39 +1,26 @@
 import SwiftUI
 
+protocol MovieDetailInteracting {
+    func handleOnLoad(request: MovieDetail.OnLoad.Request) async
+}
+
 public struct MovieDetailView: View {
+    private let interactor: MovieDetailInteracting?
+    @ObservedObject var viewState: ViewState = .init()
+
     private let title: String
     private let coverImageUrl: URL?
-    private let synopsis: String
-    private let rating: Double
-    private let duration: String
-    private let genres: [String]
-    private let releaseDate: String
-    private let director: String
-    private let cast: [String]
 
     @Environment(\.presentationMode) var presentationMode
 
-    public init(
+    init(
         title: String,
         coverImageUrl: URL? = nil,
-        synopsis: String =
-            "Uma história envolvente que cativa o público com sua narrativa única e personagens memoráveis.",
-        rating: Double = 8.5,
-        duration: String = "2h 30min",
-        genres: [String] = ["Drama", "Crime"],
-        releaseDate: String = "1994",
-        director: String = "Frank Darabont",
-        cast: [String] = ["Tim Robbins", "Morgan Freeman", "Bob Gunton"]
+        interactor: MovieDetailInteracting? = nil
     ) {
         self.title = title
         self.coverImageUrl = coverImageUrl
-        self.synopsis = synopsis
-        self.rating = rating
-        self.duration = duration
-        self.genres = genres
-        self.releaseDate = releaseDate
-        self.director = director
-        self.cast = cast
+        self.interactor = interactor
     }
 
     private func handleBackAction() {
@@ -78,31 +65,31 @@ public struct MovieDetailView: View {
                     }
                     .frame(height: 400)
 
-                    VStack(alignment: .leading, spacing: 16) {
+                    VStack(alignment: .leading, spacing: 20) {
                         Text(title)
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .padding(.horizontal)
-                            .padding(.top)
+                            .padding(.top, 20)
 
                         HStack(spacing: 20) {
                             HStack(spacing: 4) {
                                 Image(systemName: "star.fill")
                                     .foregroundColor(.yellow)
-                                Text(String(format: "%.1f", rating))
+                                Text(String(format: "%.1f", viewState.rating ?? 0))
                                     .fontWeight(.semibold)
                             }
 
                             HStack(spacing: 4) {
                                 Image(systemName: "clock")
                                     .foregroundColor(.blue)
-                                Text(duration)
+                                Text(viewState.duration ?? "")
                             }
 
                             HStack(spacing: 4) {
                                 Image(systemName: "calendar")
                                     .foregroundColor(.green)
-                                Text(releaseDate)
+                                Text(viewState.releaseDate ?? "")
                             }
 
                             Spacer()
@@ -111,7 +98,7 @@ public struct MovieDetailView: View {
 
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 8) {
-                                ForEach(genres, id: \.self) { genre in
+                                ForEach(viewState.genres ?? [], id: \.self) { genre in
                                     Text(genre)
                                         .font(.caption)
                                         .padding(.horizontal, 12)
@@ -124,7 +111,7 @@ public struct MovieDetailView: View {
                             .padding(.horizontal)
                         }
 
-                        VStack(alignment: .leading, spacing: 8) {
+                        VStack(alignment: .leading, spacing: 12) {
                             HStack {
                                 Text("📖 Sinopse")
                                     .font(.headline)
@@ -132,38 +119,130 @@ public struct MovieDetailView: View {
                                 Spacer()
                             }
 
-                            Text(synopsis)
+                            Text(viewState.synopsis ?? "Sinopse não disponível.")
                                 .font(.body)
                                 .lineLimit(nil)
                                 .multilineTextAlignment(.leading)
                         }
                         .padding(.horizontal)
 
-                        VStack(alignment: .leading, spacing: 8) {
-                            HStack {
-                                Text("🎬 Diretor")
-                                    .font(.headline)
-                                    .fontWeight(.semibold)
-                                Spacer()
-                            }
-
-                            Text(director)
-                                .font(.body)
-                        }
-                        .padding(.horizontal)
-
-                        VStack(alignment: .leading, spacing: 8) {
+                        VStack(alignment: .leading, spacing: 12) {
                             HStack {
                                 Text("🎭 Elenco Principal")
                                     .font(.headline)
                                     .fontWeight(.semibold)
                                 Spacer()
                             }
+                            .padding(.horizontal)
 
-                            ForEach(cast, id: \.self) { actor in
-                                Text("• \(actor)")
-                                    .font(.body)
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(alignment: .top, spacing: 16) {
+                                    ForEach(viewState.cast ?? [], id: \.id) { actor in
+                                        VStack(spacing: 10) {
+                                            if let profileURL = actor.profileURL {
+                                                AsyncImage(url: profileURL) { image in
+                                                    image
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fill)
+                                                        .frame(width: 80, height: 80)
+                                                        .clipShape(Circle())
+                                                        .overlay(
+                                                            Circle()
+                                                                .stroke(
+                                                                    Color.blue.opacity(0.3),
+                                                                    lineWidth: 2)
+                                                        )
+                                                } placeholder: {
+                                                    Circle()
+                                                        .fill(Color.gray.opacity(0.3))
+                                                        .frame(width: 80, height: 80)
+                                                        .overlay(
+                                                            Image(systemName: "person.fill")
+                                                                .foregroundColor(.gray)
+                                                                .font(.system(size: 30))
+                                                        )
+                                                }
+                                            } else {
+                                                Circle()
+                                                    .fill(Color.gray.opacity(0.3))
+                                                    .frame(width: 80, height: 80)
+                                                    .overlay(
+                                                        Image(systemName: "person.fill")
+                                                            .foregroundColor(.gray)
+                                                            .font(.system(size: 30))
+                                                    )
+                                            }
+
+                                            VStack(spacing: 4) {
+                                                Text(actor.name)
+                                                    .font(.caption)
+                                                    .fontWeight(.medium)
+                                                    .lineLimit(2)
+                                                    .multilineTextAlignment(.center)
+
+                                                if let character = actor.character {
+                                                    Text(character)
+                                                        .font(.caption2)
+                                                        .foregroundColor(.secondary)
+                                                        .lineLimit(2)
+                                                        .multilineTextAlignment(.center)
+                                                }
+                                            }
+                                            .frame(width: 80)
+                                        }
+                                    }
+                                }
+                                .padding(.horizontal, 20)
                             }
+                        }
+
+                        VStack(alignment: .leading, spacing: 12) {
+                            HStack {
+                                Text("📊 Informações Técnicas")
+                                    .font(.headline)
+                                    .fontWeight(.semibold)
+                                Spacer()
+                            }
+
+                            VStack(alignment: .leading, spacing: 12) {
+                                HStack {
+                                    Text("Avaliação:")
+                                        .fontWeight(.medium)
+                                    Spacer()
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "star.fill")
+                                            .foregroundColor(.yellow)
+                                        Text(String(format: "%.1f/10", viewState.rating ?? 0))
+                                            .fontWeight(.semibold)
+                                    }
+                                }
+
+                                HStack {
+                                    Text("Duração:")
+                                        .fontWeight(.medium)
+                                    Spacer()
+                                    Text(viewState.duration ?? "N/A")
+                                }
+
+                                HStack {
+                                    Text("Lançamento:")
+                                        .fontWeight(.medium)
+                                    Spacer()
+                                    Text(viewState.releaseDate ?? "N/A")
+                                }
+
+                                HStack {
+                                    Text("Diretor:")
+                                        .fontWeight(.medium)
+                                    Spacer()
+                                    Text(viewState.director ?? "N/A")
+                                        .multilineTextAlignment(.trailing)
+                                }
+                            }
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 16)
+                            .background(Color.gray.opacity(0.1))
+                            .cornerRadius(12)
                         }
                         .padding(.horizontal)
 
@@ -176,7 +255,7 @@ public struct MovieDetailView: View {
                                 .font(.headline)
                                 .foregroundColor(.white)
                                 .frame(maxWidth: .infinity)
-                                .padding()
+                                .padding(.vertical, 16)
                                 .background(Color.red)
                                 .cornerRadius(8)
                             }
@@ -189,13 +268,13 @@ public struct MovieDetailView: View {
                                 .font(.headline)
                                 .foregroundColor(.red)
                                 .frame(maxWidth: .infinity)
-                                .padding()
+                                .padding(.vertical, 16)
                                 .background(Color.red.opacity(0.1))
                                 .cornerRadius(8)
                             }
                         }
                         .padding(.horizontal)
-                        .padding(.bottom, 32)
+                        .padding(.bottom, 40)
                     }
                 }
             }
@@ -226,6 +305,12 @@ public struct MovieDetailView: View {
         }
         .edgesIgnoringSafeArea(.top)
         .scrollIndicators(.hidden)
+        .onAppear {
+            let currentInteractor = interactor
+            Task {
+                await currentInteractor?.handleOnLoad(request: MovieDetail.OnLoad.Request())
+            }
+        }
         #if os(iOS) || os(watchOS) || os(tvOS)
             .navigationBarHidden(true)
         #endif
@@ -239,20 +324,31 @@ public struct MovieDetailView: View {
         )
     }
 
+    public class ViewState: ObservableObject, MovieDetailDisplaying {
+        @Published var synopsis: String?
+        @Published var rating: Double?
+        @Published var duration: String?
+        @Published var genres: [String]?
+        @Published var releaseDate: String?
+        @Published var director: String?
+        @Published var cast: [MovieDetail.OnLoad.CastMember]?
+
+        func displayOnLoad(viewModel: MovieDetail.OnLoad.ViewModel) {
+            synopsis = viewModel.synopsis
+            rating = viewModel.rating
+            duration = viewModel.duration
+            genres = viewModel.genres
+            releaseDate = viewModel.releaseDate
+            director = viewModel.director
+            cast = viewModel.cast
+        }
+    }
 }
 
 #Preview {
     MovieDetailView(
         title: "The Shawshank Redemption",
         coverImageUrl: URL(
-            string: "https://image.tmdb.org/t/p/w500/m5NKltgQqqyoWJNuK18IqEGRG7J.jpg"),
-        synopsis:
-            "Dois homens presos se unem ao longo de vários anos, encontrando consolo e eventual redenção através de atos de decência comum. Uma história tocante sobre amizade, esperança e a capacidade humana de encontrar luz mesmo nas circunstâncias mais sombrias.",
-        rating: 9.3,
-        duration: "2h 22min",
-        genres: ["Drama", "Crime"],
-        releaseDate: "1994",
-        director: "Frank Darabont",
-        cast: ["Tim Robbins", "Morgan Freeman", "Bob Gunton", "James Whitmore"]
+            string: "https://image.tmdb.org/t/p/w500/m5NKltgQqqyoWJNuK18IqEGRG7J.jpg")
     )
 }
