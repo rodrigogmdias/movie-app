@@ -1,6 +1,8 @@
 # 🎬 MovieApp
 
-Um aplicativo iOS moderno para explor       ├── 📚 Catalog/        # Catálogo de filmes
+Um aplicativo iOS moderno para explor       ├── 📚   │   ├── 🎨 Components/     # Componentes reutilizáveis
+   │   │   ├── GalleryView.swift
+   │   │   └── SkeletonView.swiftatalog/        # Catálogo de filmes
        │   ├── CatalogConfigurator.swift
        │   ├── CatalogView.swift
        │   ├── CatalogPresenter.swift
@@ -14,6 +16,9 @@ Um aplicativo iOS moderno para explor       ├── 📚 Catalog/        # Cat
        ├── ❤️ Favorites/      # Gerenciamento de favoritos
        │   ├── FavoritesConfigurator.swift
        │   ├── FavoritesView.swift
+       │   ├── FavoritesPresenter.swift
+       │   ├── FavoritesInteractor.swift
+       │   ├── FavoritesModels.swift
        │   └── Views/
        │       ├── FavoritesLoadedView.swift
        │       └── FavoritesLoadingView.swift
@@ -21,9 +26,13 @@ Um aplicativo iOS moderno para explor       ├── 📚 Catalog/        # Cat
        └── 🎭 MovieDetail/    # Detalhes do filme
            ├── MovieDetailConfigurator.swift
            ├── MovieDetailView.swift
-           └── Views/
-               ├── MovieDetailLoadedView.swift
-               └── MovieDetailLoadingView.swiftfilmes, construído com Swift e arquitetura modular baseada em VIPER.
+           ├── MovieDetailPresenter.swift
+           ├── MovieDetailInteractor.swift
+           ├── MovieDetailModels.swift
+           ├── Views/
+           │   ├── MovieDetailLoadedView.swift
+           │   └── MovieDetailLoadingView.swift
+           └── Data/filmes, construído com Swift e arquitetura modular baseada em VIPER.
 
 ## ✨ Características
 
@@ -97,7 +106,7 @@ Cada feature segue o padrão VIPER:
 - **View**: Componentes SwiftUI responsáveis pela interface
 - **Interactor**: Lógica de negócio e comunicação com serviços
 - **Presenter**: Coordena a comunicação entre View e Interactor
-- **Entity**: Modelos de dados
+- **Entity**: Modelos de dados (Models)
 - **Router/Configurator**: Configuração e navegação entre módulos
 
 ### 📱 Estrutura de Views
@@ -125,6 +134,7 @@ graph TD
     Cat --> Net[🌐 Network]
     Cat --> Comp[🎨 Components]
     MD --> Net
+    MD --> Comp
     Fav --> SP[💾 SharedPreferences]
     
     %% Network Dependencies
@@ -142,7 +152,7 @@ graph TD
 
 **Legenda:**
 - 🎬 **App**: Aplicativo principal
-- 🧭 **Features**: Módulos de funcionalidades
+- 🎯 **Features**: Módulos de funcionalidades
 - 🛠️ **Commons**: Módulos compartilhados
 
 ## 🚀 Como Executar
@@ -151,7 +161,7 @@ graph TD
 
 - 📱 **Xcode 15.0+**
 - 🍎 **iOS 16.0+**
-- 🔧 **Swift 6.1+**
+- 🔧 **Swift 5.9+**
 - 💻 **macOS 13.0+**
 
 ### Passos para executar
@@ -179,13 +189,8 @@ graph TD
 ## 🧪 Executando Testes
 
 ### Testes via Xcode
-```bash
-# Todos os testes
-⌘ + U
-
-# Testes específicos
-⌘ + Shift + U
-```
+- **Todos os testes**: `⌘ + U`
+- **Testes específicos**: `⌘ + Shift + U`
 
 ### Testes via Terminal
 ```bash
@@ -193,46 +198,41 @@ graph TD
 cd movieapp
 
 # Executar testes de módulos específicos
-# IMPORTANTE: Mantenha a mesma estrutura de pastas para navegar corretamente
 cd Modules/Features/BottomNavigator && swift test
 cd ../Catalog && swift test
+cd ../MovieDetail && swift test
+cd ../Favorites && swift test
+
+# Testes dos módulos comuns
 cd ../../Commons/Network && swift test
 cd ../Session && swift test
 cd ../SharedPreferences && swift test
 cd ../Components && swift test
 ```
 
-### Executar todos os testes
+### Script para executar todos os testes
 ```bash
-# Script para executar todos os testes
-# Navega seguindo a estrutura de pastas do projeto
+#!/bin/bash
+echo "🧪 Executando todos os testes dos módulos..."
+
+# Testes das Features
 for module in Modules/Features/*/; do
-    echo "🧪 Testando $(basename "$module")"
-    cd "$module" && swift test && cd - > /dev/null
+    if [ -f "$module/Package.swift" ]; then
+        echo "🧪 Testando $(basename "$module")"
+        cd "$module" && swift test && cd - > /dev/null
+    fi
 done
 
+# Testes dos Commons
 for module in Modules/Commons/*/; do
-    echo "🧪 Testando $(basename "$module")"
-    cd "$module" && swift test && cd - > /dev/null
+    if [ -f "$module/Package.swift" ]; then
+        echo "🧪 Testando $(basename "$module")"
+        cd "$module" && swift test && cd - > /dev/null
+    fi
 done
-```
 
-> **📁 Estrutura de Pastas para Testes:**
-> 
-> Os testes seguem a mesma estrutura hierárquica do projeto. Certifique-se de estar no diretório correto antes de executar os comandos:
-> 
-> ```
-> movieapp/
-> ├── Modules/
-> │   ├── Features/
-> │   │   ├── BottomNavigator/
-> │   │   ├── Catalog/
-> │   │   └── ...
-> │   └── Commons/
-> │       ├── Network/
-> │       ├── Session/
-> │       └── ...
-> ```
+echo "✅ Todos os testes executados!"
+```
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -241,16 +241,18 @@ done
 - **Combine** - Framework de programação reativa
 - **Async/Await** - Programação assíncrona moderna
 - **VIPER** - Arquitetura modular para iOS
+- **XCTest** - Framework de testes unitários
 - **Xcode** - IDE de desenvolvimento
 - **iOS SDK** - Plataforma de desenvolvimento
 
 ## 📝 Estrutura de Código
 
 ### Convenções de Nomenclatura
-- **Files**: PascalCase (ex: `MovieDetailView.swift`)
+- **Arquivos**: PascalCase (ex: `MovieDetailView.swift`)
 - **Classes/Structs**: PascalCase (ex: `NetworkService`)
-- **Variables/Functions**: camelCase (ex: `fetchMovies()`)
-- **Constants**: camelCase (ex: `baseURL`)
+- **Variáveis/Funções**: camelCase (ex: `fetchMovies()`)
+- **Constantes**: camelCase (ex: `baseURL`)
+- **Protocols**: PascalCase com sufixo "able" (ex: `Networkable`)
 
 ### Organização de Arquivos
 ```
@@ -269,12 +271,25 @@ ModuleName/
 │       └── Data/
 └── Tests/
     └── ModuleNameTests/
-        ├── ModuleNameTests.swift
         ├── ModuleConfiguratorTests.swift
         ├── ModulePresenterTests.swift
         ├── ModuleInteractorTests.swift
         └── ModuleModelsTests.swift
 ```
+
+### Padrões de Desenvolvimento
+
+#### VIPER Pattern
+- **View**: Recebe eventos do usuário e exibe dados
+- **Interactor**: Contém a lógica de negócio
+- **Presenter**: Coordena View e Interactor
+- **Entity**: Modelos de dados
+- **Router**: Navegação entre módulos
+
+#### Dependency Injection
+- Módulos são injetados via Swift Package Manager
+- Configuradores gerenciam dependências
+- Protocolos definem contratos entre camadas
 
 ## 🤝 Como Contribuir
 
@@ -302,7 +317,7 @@ ModuleName/
    ```
 3. **Implemente seguindo as convenções**
    - Siga o padrão VIPER
-   - Adicione testes
+   - Adicione testes para novas funcionalidades
    - Mantenha a documentação atualizada
 4. **Commit suas mudanças**
    ```bash
@@ -316,7 +331,7 @@ ModuleName/
 
 ### 📝 Convenções de Commit
 
-Usamos emojis para deixar o histórico mais claro:
+Utilizamos emojis para categorizar commits:
 
 - ✨ `:sparkles:` - Nova feature
 - 🐛 `:bug:` - Correção de bug
@@ -327,36 +342,42 @@ Usamos emojis para deixar o histórico mais claro:
 - 🚀 `:rocket:` - Performance
 - 🔐 `:lock:` - Segurança
 - 📦 `:package:` - Dependências
+- 🏗️ `:building_construction:` - Arquitetura
 
 ### 🧪 Padrões de Teste
 
-- Todos os módulos devem ter testes
-- Cobertura mínima de 80%
-- Testes de unidade para Interactors
-- Testes de integração para NetworkService
+- **Cobertura mínima**: 80% para módulos críticos
+- **Testes unitários**: Para Interactors e Presenters
+- **Testes de integração**: Para NetworkService
+- **Mocks**: Para dependências externas
+- **Nomenclatura**: `test_funcionalidade_cenario_resultadoEsperado`
 
 ## 📋 Roadmap
 
-### Fase 1 - Core Features
+### Fase 1 - Core Features ✅
 - [x] 🏗️ Arquitetura modular VIPER
-- [x] 🧭 Sistema de navegação
-- [x] 📚 Catálogo básico
+- [x] 🧭 Sistema de navegação Bottom Tab
+- [x] 📚 Catálogo de filmes
 - [x] ❤️ Sistema de favoritos
-- [x] 🌐 Camada de rede
+- [x] 🌐 Camada de rede com Async/Await
+- [x] 💾 Gerenciamento de sessão
 
-### Fase 2 - Enhancements
+### Fase 2 - Enhancements 🚧
 - [ ] 🔍 Busca de filmes
-- [ ] 🎭 Detalhes completos dos filmes
+- [ ] 🎭 Tela de detalhes completa
 - [ ] 🌟 Sistema de avaliações
-- [ ] 📱 Suporte ao iPad
+- [ ] 📱 Adaptação para iPad
 - [ ] 🌙 Modo escuro
+- [ ] 🔄 Pull to refresh
 
-### Fase 3 - Advanced Features
-- [ ] 🔄 Sincronização com API externa
-- [ ] 💾 Cache local
-- [ ] 🔔 Notificações
+### Fase 3 - Advanced Features 📋
+- [ ] 🔄 Sincronização com API externa (TMDb)
+- [ ] 💾 Cache local com Core Data
+- [ ] 🔔 Notificações push
 - [ ] 🎯 Recomendações personalizadas
-- [ ] 🌍 Internacionalização
+- [ ] 🌍 Internacionalização (i18n)
+- [ ] 🎬 Trailers de filmes
+- [ ] 📊 Analytics de uso
 
 ## 📄 Licença
 
@@ -376,8 +397,19 @@ Tem alguma dúvida? Entre em contato:
 - 💬 **GitHub**: [@rodrigogmdias](https://github.com/rodrigogmdias)
 - 🐦 **Twitter**: [@rodrigogmdias](https://twitter.com/rodrigogmdias)
 
+## 📊 Status do Projeto
+
+![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow)
+![Swift](https://img.shields.io/badge/Swift-5.9-orange)
+![iOS](https://img.shields.io/badge/iOS-16.0+-blue)
+![Xcode](https://img.shields.io/badge/Xcode-15.0+-blue)
+
 ---
 
 <p align="center">
   Feito com ❤️ e muito ☕ por <a href="https://github.com/rodrigogmdias">Rodrigo Dias</a>
+</p>
+
+<p align="center">
+  <strong>Gostou do projeto? Deixe uma ⭐ se este repositório te ajudou!</strong>
 </p>
