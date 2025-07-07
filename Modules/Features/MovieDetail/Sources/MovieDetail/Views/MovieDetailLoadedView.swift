@@ -6,6 +6,10 @@ struct MovieDetailLoadedView: View {
     let viewState: MovieDetailView.ViewState
     let onFavoriteToggle: (() -> Void)?
 
+    @State private var isAnimating = false
+    @State private var pulseAnimation = false
+    @State private var showParticles = false
+
     init(
         title: String,
         coverImageUrl: URL?,
@@ -251,21 +255,62 @@ struct MovieDetailLoadedView: View {
                         }
 
                         Button(action: {
-                            onFavoriteToggle?()
-                        }) {
-                            HStack {
-                                Image(systemName: viewState.isFavorite ? "heart.fill" : "heart")
-                                Text(viewState.isFavorite ? "Favorito" : "Favoritar")
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                                isAnimating = true
+                                pulseAnimation.toggle()
+                                showParticles = true
                             }
-                            .font(.headline)
-                            .foregroundColor(.red)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
-                            .background(
-                                viewState.isFavorite
-                                    ? Color.red.opacity(0.2) : Color.red.opacity(0.1)
-                            )
-                            .cornerRadius(8)
+
+                            onFavoriteToggle?()
+
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                withAnimation(.easeOut(duration: 0.2)) {
+                                    isAnimating = false
+                                }
+                            }
+
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                showParticles = false
+                            }
+                        }) {
+                            ZStack {
+                                HStack {
+                                    Image(systemName: viewState.isFavorite ? "heart.fill" : "heart")
+                                        .scaleEffect(isAnimating ? 1.3 : 1.0)
+                                        .rotationEffect(.degrees(isAnimating ? 360 : 0))
+                                        .animation(
+                                            .spring(response: 0.3, dampingFraction: 0.6),
+                                            value: isAnimating)
+                                    Text(viewState.isFavorite ? "Favorito" : "Favoritar")
+                                }
+                                .font(.headline)
+                                .foregroundColor(.red)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 16)
+                                .background(
+                                    viewState.isFavorite
+                                        ? Color.red.opacity(0.2) : Color.red.opacity(0.1)
+                                )
+                                .cornerRadius(8)
+                                .scaleEffect(pulseAnimation ? 1.05 : 1.0)
+                                .animation(.easeInOut(duration: 0.1), value: pulseAnimation)
+
+                                if showParticles && viewState.isFavorite {
+                                    ForEach(0..<6, id: \.self) { index in
+                                        Image(systemName: "heart.fill")
+                                            .foregroundColor(.red)
+                                            .font(.system(size: 12))
+                                            .offset(
+                                                x: cos(Double(index) * .pi / 3) * 40,
+                                                y: sin(Double(index) * .pi / 3) * 40
+                                            )
+                                            .opacity(showParticles ? 0 : 1)
+                                            .scaleEffect(showParticles ? 1.5 : 0.5)
+                                            .animation(
+                                                .easeOut(duration: 1.0), value: showParticles)
+                                    }
+                                }
+                            }
                         }
                     }
                     .padding(.horizontal)
