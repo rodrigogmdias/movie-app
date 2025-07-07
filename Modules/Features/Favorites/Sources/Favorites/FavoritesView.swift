@@ -71,6 +71,13 @@ public struct FavoritesView: View {
     }
 
     private func shareList() {
+        let movieTitles = viewState.favorites.map { "• \($0.title)" }.joined(separator: "\n")
+        let shareText = "Confira meus filmes favoritos no app!\n\n\(movieTitles)\n\nBaixe o app para ver mais recomendações."
+        let activityVC = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootVC = windowScene.windows.first?.rootViewController {
+            rootVC.present(activityVC, animated: true, completion: nil)
+        }
         interactor?.handleShareFavorites(request: Favorites.ShareFavorites.Request())
     }
 
