@@ -18,6 +18,7 @@ let package = Package(
     dependencies: [
         .package(name: "Network", path: "../../Commons/Network"),
         .package(name: "Components", path: "../../Commons/Components"),
+        .package(name: "SharedPreferences", path: "../../Commons/SharedPreferences"),
     ],
     targets: [
         .target(
@@ -25,6 +26,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Network", package: "Network"),
                 .product(name: "Components", package: "Components"),
+                .product(name: "SharedPreferences", package: "SharedPreferences"),
             ]
         ),
         .testTarget(

@@ -15,9 +15,16 @@ let package = Package(
             name: "Favorites",
             targets: ["Favorites"])
     ],
+    dependencies: [
+        .package(name: "SharedPreferences", path: "../../Commons/SharedPreferences"),
+    ],
     targets: [
         .target(
-            name: "Favorites"),
+            name: "Favorites",
+            dependencies: [
+                .product(name: "SharedPreferences", package: "SharedPreferences")
+            ],
+        ),
         .testTarget(
             name: "FavoritesTests",
             dependencies: ["Favorites"]
