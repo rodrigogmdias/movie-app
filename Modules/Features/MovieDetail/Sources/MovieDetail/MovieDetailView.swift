@@ -3,6 +3,8 @@ import SwiftUI
 
 protocol MovieDetailInteracting {
     func handleOnLoad(request: MovieDetail.OnLoad.Request) async
+    func toggleFavorite(title: String, coverImageUrl: String?)
+    func isFavorite() -> Bool
 }
 
 public struct MovieDetailView: View {
@@ -28,6 +30,12 @@ public struct MovieDetailView: View {
         presentationMode.wrappedValue.dismiss()
     }
 
+    private func handleFavoriteToggle() {
+        interactor?.toggleFavorite(title: title, coverImageUrl: coverImageUrl?.absoluteString)
+        let newFavoriteStatus = interactor?.isFavorite() ?? false
+        viewState.updateFavoriteStatus(newFavoriteStatus)
+    }
+
     public var body: some View {
         ZStack(alignment: .topLeading) {
             if viewState.isLoading {
@@ -39,7 +47,8 @@ public struct MovieDetailView: View {
                 MovieDetailLoadedView(
                     title: title,
                     coverImageUrl: coverImageUrl,
-                    viewState: viewState
+                    viewState: viewState,
+                    onFavoriteToggle: handleFavoriteToggle
                 )
             }
 
@@ -70,6 +79,7 @@ public struct MovieDetailView: View {
         .scrollIndicators(.hidden)
         .onAppear {
             let currentInteractor = interactor
+            viewState.updateFavoriteStatus(currentInteractor?.isFavorite() ?? false)
             Task {
                 await currentInteractor?.handleOnLoad(request: MovieDetail.OnLoad.Request())
             }
@@ -96,6 +106,7 @@ public struct MovieDetailView: View {
         @Published var releaseDate: String?
         @Published var director: String?
         @Published var cast: [MovieDetail.OnLoad.CastMember]?
+        @Published var isFavorite: Bool = false
 
         func displayOnLoad(viewModel: MovieDetail.OnLoad.ViewModel) {
             synopsis = viewModel.synopsis
@@ -106,6 +117,10 @@ public struct MovieDetailView: View {
             director = viewModel.director
             cast = viewModel.cast
             isLoading = false
+        }
+
+        func updateFavoriteStatus(_ isFavorite: Bool) {
+            self.isFavorite = isFavorite
         }
     }
 }

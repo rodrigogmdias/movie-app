@@ -6,6 +6,7 @@ public class MovieDetailInteractor: MovieDetailInteracting {
     private let presenter: MovieDetailPresenting
     private let movieID: Int
     private let service = MovieDetailService()
+    private let localStorage = MovieDetailLocalStorage()
 
     init(
         presenter: MovieDetailPresenting,
@@ -24,5 +25,21 @@ public class MovieDetailInteractor: MovieDetailInteracting {
             print("Error fetching movie details: \(error)")
         }
     }
-}
 
+    public func toggleFavorite(title: String, coverImageUrl: String?) {
+        if localStorage.isFavorite(movieId: movieID) {
+            localStorage.removeFavorite(movieId: movieID)
+        } else {
+            let favoriteMovie = FavoriteMovie(
+                id: movieID,
+                title: title,
+                coverImageUrl: coverImageUrl
+            )
+            localStorage.addFavorite(movie: favoriteMovie)
+        }
+    }
+
+    public func isFavorite() -> Bool {
+        return localStorage.isFavorite(movieId: movieID)
+    }
+}

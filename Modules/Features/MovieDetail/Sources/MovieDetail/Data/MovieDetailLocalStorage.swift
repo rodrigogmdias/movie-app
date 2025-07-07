@@ -1,3 +1,4 @@
+import Foundation
 import SharedPreferences
 
 class MovieDetailLocalStorage {
@@ -8,27 +9,46 @@ class MovieDetailLocalStorage {
         self.sharedPreferences = sharedPreferences
     }
 
-    func addFavorite(movieId: Int) {
+    func addFavorite(movie: FavoriteMovie) {
         var favorites = getFavorites()
-        if !favorites.contains(movieId) {
-            favorites.append(movieId)
-            sharedPreferences.set(favorites, forKey: favoritesKey)
+        if !favorites.contains(where: { $0.id == movie.id }) {
+            favorites.append(movie)
+            saveFavorites(favorites)
         }
     }
 
     func removeFavorite(movieId: Int) {
         var favorites = getFavorites()
-        if let index = favorites.firstIndex(of: movieId) {
+        if let index = favorites.firstIndex(where: { $0.id == movieId }) {
             favorites.remove(at: index)
-            sharedPreferences.set(favorites, forKey: favoritesKey)
+            saveFavorites(favorites)
         }
     }
 
     func isFavorite(movieId: Int) -> Bool {
-        return getFavorites().contains(movieId)
+        return getFavorites().contains(where: { $0.id == movieId })
     }
 
-    func getFavorites() -> [Int] {
-        return sharedPreferences.get(forKey: favoritesKey) ?? []
+    func getFavorites() -> [FavoriteMovie] {
+        guard let data: Data = sharedPreferences.get(forKey: favoritesKey) else {
+            return []
+        }
+
+        do {
+            let favorites = try JSONDecoder().decode([FavoriteMovie].self, from: data)
+            return favorites
+        } catch {
+            print("Error decoding favorites: \(error)")
+            return []
+        }
+    }
+
+    private func saveFavorites(_ favorites: [FavoriteMovie]) {
+        do {
+            let data = try JSONEncoder().encode(favorites)
+            sharedPreferences.set(data, forKey: favoritesKey)
+        } catch {
+            print("Error encoding favorites: \(error)")
+        }
     }
 }

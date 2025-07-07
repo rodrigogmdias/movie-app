@@ -4,6 +4,19 @@ struct MovieDetailLoadedView: View {
     let title: String
     let coverImageUrl: URL?
     let viewState: MovieDetailView.ViewState
+    let onFavoriteToggle: (() -> Void)?
+
+    init(
+        title: String,
+        coverImageUrl: URL?,
+        viewState: MovieDetailView.ViewState,
+        onFavoriteToggle: (() -> Void)? = nil
+    ) {
+        self.title = title
+        self.coverImageUrl = coverImageUrl
+        self.viewState = viewState
+        self.onFavoriteToggle = onFavoriteToggle
+    }
 
     var body: some View {
         ScrollView {
@@ -237,16 +250,21 @@ struct MovieDetailLoadedView: View {
                             .cornerRadius(8)
                         }
 
-                        Button(action: {}) {
+                        Button(action: {
+                            onFavoriteToggle?()
+                        }) {
                             HStack {
-                                Image(systemName: "heart")
-                                Text("Favoritar")
+                                Image(systemName: viewState.isFavorite ? "heart.fill" : "heart")
+                                Text(viewState.isFavorite ? "Favorito" : "Favoritar")
                             }
                             .font(.headline)
                             .foregroundColor(.red)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
-                            .background(Color.red.opacity(0.1))
+                            .background(
+                                viewState.isFavorite
+                                    ? Color.red.opacity(0.2) : Color.red.opacity(0.1)
+                            )
                             .cornerRadius(8)
                         }
                     }
@@ -290,6 +308,9 @@ struct MovieDetailLoadedView: View {
         title: "The Shawshank Redemption",
         coverImageUrl: URL(
             string: "https://image.tmdb.org/t/p/w500/m5NKltgQqqyoWJNuK18IqEGRG7J.jpg"),
-        viewState: mockViewState
+        viewState: mockViewState,
+        onFavoriteToggle: {
+            print("Favorito toggle")
+        }
     )
 }
