@@ -1,6 +1,6 @@
 import Foundation
 
-public struct FavoriteMovie: Codable, Identifiable, Equatable {
+public struct FavoriteMovie: Codable, Identifiable, Equatable, Hashable {
     public let id: Int
     public let title: String
     public let coverImageUrl: String?

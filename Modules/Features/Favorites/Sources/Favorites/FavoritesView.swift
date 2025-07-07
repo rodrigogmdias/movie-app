@@ -1,3 +1,4 @@
+import MovieDetail
 import SwiftUI
 
 public protocol FavoritesInteracting: AnyObject {
@@ -20,7 +21,7 @@ public struct FavoritesView: View {
     }
 
     public var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     FavoritesHeaderView(favoritesCount: viewState.favorites.count)
@@ -36,6 +37,13 @@ public struct FavoritesView: View {
                         )
                     }
                 }
+            }
+            .navigationDestination(for: FavoriteMovie.self) { movie in
+                MovieDetailConfigurator.configure(
+                    id: movie.id,
+                    title: movie.title,
+                    coverImageUrl: movie.coverImageUrl.flatMap { URL(string: $0) }
+                )
             }
             .onAppear {
                 interactor?.handleLoadFavorites(request: Favorites.LoadFavorites.Request())

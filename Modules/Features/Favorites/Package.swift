@@ -17,12 +17,14 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "SharedPreferences", path: "../../Commons/SharedPreferences"),
+        .package(name: "MovieDetail", path: "../MovieDetail"),
     ],
     targets: [
         .target(
             name: "Favorites",
             dependencies: [
-                .product(name: "SharedPreferences", package: "SharedPreferences")
+                .product(name: "SharedPreferences", package: "SharedPreferences"),
+                .product(name: "MovieDetail", package: "MovieDetail"),
             ],
         ),
         .testTarget(
