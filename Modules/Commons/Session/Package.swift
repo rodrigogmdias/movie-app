@@ -5,10 +5,7 @@ import PackageDescription
 let package = Package(
     name: "Session",
     platforms: [
-        .iOS(.v16),
-        .macOS(.v13),
-        .tvOS(.v16),
-        .watchOS(.v9),
+        .iOS(.v16)
     ],
     products: [
         .library(
