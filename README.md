@@ -1,50 +1,51 @@
-# 🎬 MovieApp
+# MovieApp
 
-Um aplicativo iOS moderno para explor       ├── 📚   │   ├── 🎨 Components/     # Componentes reutilizáveis
-   │   │   ├── GalleryView.swift
-   │   │   └── SkeletonView.swiftatalog/        # Catálogo de filmes
-       │   ├── CatalogConfigurator.swift
-       │   ├── CatalogView.swift
-       │   ├── CatalogPresenter.swift
-       │   ├── CatalogInteractor.swift
-       │   ├── CatalogModels.swift
-       │   ├── Views/
-       │   │   ├── CatalogLoadedView.swift
-       │   │   └── CatalogLoadingView.swift
-       │   └── Data/
-       │
-       ├── ❤️ Favorites/      # Gerenciamento de favoritos
-       │   ├── FavoritesConfigurator.swift
-       │   ├── FavoritesView.swift
-       │   ├── FavoritesPresenter.swift
-       │   ├── FavoritesInteractor.swift
-       │   ├── FavoritesModels.swift
-       │   └── Views/
-       │       ├── FavoritesLoadedView.swift
-       │       └── FavoritesLoadingView.swift
-       │
-       └── 🎭 MovieDetail/    # Detalhes do filme
-           ├── MovieDetailConfigurator.swift
-           ├── MovieDetailView.swift
-           ├── MovieDetailPresenter.swift
-           ├── MovieDetailInteractor.swift
-           ├── MovieDetailModels.swift
-           ├── Views/
-           │   ├── MovieDetailLoadedView.swift
-           │   └── MovieDetailLoadingView.swift
-           └── Data/filmes, construído com Swift e arquitetura modular baseada em VIPER.
+O **MovieApp** é um aplicativo iOS moderno e sofisticado para explorar filmes, desenvolvido com **Swift** e **SwiftUI** seguindo as melhores práticas de desenvolvimento mobile. Este projeto demonstra uma implementação completa de uma aplicação nativa iOS utilizando arquitetura modular baseada no padrão **VIPER**, proporcionando alta escalabilidade, testabilidade e manutenibilidade.
 
-## ✨ Características
+O aplicativo foi construído com foco em:
+- **Arquitetura Limpa**: Separação clara de responsabilidades entre camadas
+- **Modularidade**: Cada feature é um módulo independente e reutilizável
+- **Performance**: Utilização de técnicas modernas como Async/Await e Combine
+- **Experiência do Usuário**: Interface fluida e intuitiva construída com SwiftUI
+- **Qualidade**: Cobertura de testes abrangente e código bem documentado
 
-- 🏗️ **Arquitetura VIPER**: Organizado em módulos independentes seguindo princípios SOLID
-- 📦 **Swift Package Manager**: Gerenciamento modular de dependências
-- 📱 **SwiftUI**: Interface nativa moderna e responsiva
-- 🗂️ **Catálogo de Filmes**: Explore uma vasta coleção de filmes
-- ❤️ **Favoritos**: Salve seus filmes preferidos para acesso rápido
-- 🧭 **Navegação Bottom Tab**: Interface de navegação intuitiva
-- 🎭 **Detalhes do Filme**: Visualize informações detalhadas dos filmes
-- 🌐 **Networking**: Camada de rede robusta com suporte a Async/Await
-- 💾 **Session Management**: Gerenciamento de sessão e preferências
+### 🎯 Principais Funcionalidades
+
+- **Catálogo de Filmes**: Navegue por uma extensa coleção de filmes
+- **Favoritos**: Salve e gerencie seus filmes preferidos
+- **Detalhes do Filme**: Visualize informações completas sobre cada filme
+- **Navegação Intuitiva**: Sistema de navegação por abas para fácil acesso
+- **Estados de Interface**: Feedback visual durante carregamento e estados vazios
+- **Gerenciamento de Sessão**: Controle de estado e preferências do usuário
+
+## ✨ Características Técnicas
+
+### 🏗️ Arquitetura & Padrões
+- **VIPER Pattern**: Organização modular seguindo princípios SOLID
+- **Dependency Injection**: Injeção de dependências via Swift Package Manager
+- **Repository Pattern**: Abstração da camada de dados
+- **Coordinator Pattern**: Navegação desacoplada entre features
+
+### 🔧 Tecnologias & Ferramentas
+- **SwiftUI**: Interface nativa moderna e declarativa
+- **Swift Package Manager**: Gerenciamento modular de dependências
+- **Combine**: Programação reativa para fluxos de dados
+- **Async/Await**: Programação assíncrona moderna
+- **XCTest**: Framework de testes unitários e de integração
+
+### 📱 Funcionalidades do App
+- **Catálogo Interativo**: Explore filmes com interface fluida
+- **Sistema de Favoritos**: Marque e gerencie filmes favoritos
+- **Navegação por Abas**: Interface intuitiva com Bottom Tab Navigator
+- **Detalhes Completos**: Informações detalhadas de cada filme
+- **Estados de Interface**: Loading, carregado, erro e estados vazios
+- **Gerenciamento de Sessão**: Controle de estado e preferências
+
+### 🌐 Networking & Dados
+- **Camada de Rede Robusta**: Implementação com Async/Await
+- **Error Handling**: Tratamento de erros estruturado
+- **Session Management**: Gerenciamento de sessão e autenticação
+- **Shared Preferences**: Armazenamento de preferências do usuário
 
 ## 🏗️ Arquitetura
 
@@ -234,16 +235,26 @@ done
 echo "✅ Todos os testes executados!"
 ```
 
-## 🛠️ Tecnologias Utilizadas
+## 🛠️ Stack Tecnológico
 
-- **SwiftUI** - Framework de interface do usuário declarativa
-- **Swift Package Manager** - Gerenciamento de dependências e módulos
-- **Combine** - Framework de programação reativa
-- **Async/Await** - Programação assíncrona moderna
+### 📱 Desenvolvimento iOS
+- **Swift 5.9+** - Linguagem de programação principal
+- **SwiftUI** - Framework de interface declarativa
+- **UIKit** - Componentes de interface complementares
+- **iOS 16.0+** - Plataforma de desenvolvimento
+
+### 🏗️ Arquitetura & Padrões
 - **VIPER** - Arquitetura modular para iOS
-- **XCTest** - Framework de testes unitários
-- **Xcode** - IDE de desenvolvimento
-- **iOS SDK** - Plataforma de desenvolvimento
+- **SOLID Principles** - Princípios de design de software
+- **Repository Pattern** - Abstração da camada de dados
+- **Dependency Injection** - Injeção de dependências
+
+### 🔧 Ferramentas & Frameworks
+- **Swift Package Manager** - Gerenciamento de dependências
+- **Combine** - Programação reativa
+- **Async/Await** - Programação assíncrona
+- **XCTest** - Framework de testes
+- **Xcode 15.0+** - IDE de desenvolvimento
 
 ## 📝 Estrutura de Código
 
@@ -397,19 +408,12 @@ Tem alguma dúvida? Entre em contato:
 - 💬 **GitHub**: [@rodrigogmdias](https://github.com/rodrigogmdias)
 - 🐦 **Twitter**: [@rodrigogmdias](https://twitter.com/rodrigogmdias)
 
-## 📊 Status do Projeto
-
-![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow)
-![Swift](https://img.shields.io/badge/Swift-5.9-orange)
-![iOS](https://img.shields.io/badge/iOS-16.0+-blue)
-![Xcode](https://img.shields.io/badge/Xcode-15.0+-blue)
-
 ---
 
-<p align="center">
-  Feito com ❤️ e muito ☕ por <a href="https://github.com/rodrigogmdias">Rodrigo Dias</a>
-</p>
+<div align="center">
+  
+**Feito com ❤️ e muito ☕ por [Rodrigo Dias](https://github.com/rodrigogmdias)**
 
-<p align="center">
-  <strong>Gostou do projeto? Deixe uma ⭐ se este repositório te ajudou!</strong>
-</p>
+**Gostou do projeto? Deixe uma ⭐ se este repositório te ajudou!**
+
+</div>
