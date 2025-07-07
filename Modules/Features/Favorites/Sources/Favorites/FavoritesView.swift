@@ -12,7 +12,7 @@ public struct FavoritesView: View {
     @ObservedObject var viewState: ViewState
 
     @State private var showingDeleteConfirmation = false
-    @State private var itemToDelete: String?
+    @State private var movieToDelete: FavoriteMovie?
 
     public init(interactor: FavoritesInteracting?, viewState: ViewState) {
         self.interactor = interactor
@@ -47,9 +47,9 @@ public struct FavoritesView: View {
         .alert("Remover dos Favoritos", isPresented: $showingDeleteConfirmation) {
             Button("Cancelar", role: .cancel) {}
             Button("Remover", role: .destructive) {
-                if let item = itemToDelete {
+                if let movie = movieToDelete {
                     interactor?.handleRemoveFavorite(
-                        request: Favorites.RemoveFavorite.Request(movie: item))
+                        request: Favorites.RemoveFavorite.Request(movieId: movie.id))
                 }
             }
         } message: {
@@ -57,14 +57,9 @@ public struct FavoritesView: View {
         }
     }
 
-    private func confirmRemoval(_ movie: String) {
-        itemToDelete = movie
+    private func confirmRemoval(_ movie: FavoriteMovie) {
+        movieToDelete = movie
         showingDeleteConfirmation = true
-    }
-
-    private func removeFromFavorites(_ movie: String) {
-        interactor?.handleRemoveFavorite(request: Favorites.RemoveFavorite.Request(movie: movie))
-        itemToDelete = nil
     }
 
     private func shareList() {
@@ -76,7 +71,7 @@ public struct FavoritesView: View {
     }
 
     public final class ViewState: ObservableObject, FavoritesDisplaying {
-        @Published var favorites: [String] = []
+        @Published var favorites: [FavoriteMovie] = []
         private var isInitialLoad = true
 
         public func displayFavorites(viewModel: Favorites.LoadFavorites.ViewModel) {
@@ -92,7 +87,7 @@ public struct FavoritesView: View {
 
         public func displayRemovedFavorite(viewModel: Favorites.RemoveFavorite.ViewModel) {
             withAnimation(.easeInOut(duration: 0.3)) {
-                favorites.removeAll { $0 == viewModel.removedMovie }
+                favorites.removeAll { $0.id == viewModel.removedMovieId }
             }
         }
 
@@ -103,7 +98,8 @@ public struct FavoritesView: View {
         }
 
         public func displaySharedFavorites(viewModel: Favorites.ShareFavorites.ViewModel) {
-            print("Compartilhando lista de favoritos: \(viewModel.movies)")
+            let movieTitles = viewModel.movies.map { $0.title }
+            print("Compartilhando lista de favoritos: \(movieTitles)")
         }
     }
 }

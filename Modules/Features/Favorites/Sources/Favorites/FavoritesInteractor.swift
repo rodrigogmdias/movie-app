@@ -7,39 +7,35 @@ protocol FavoritesPresenting {
 
 class FavoritesInteractor: FavoritesInteracting {
     private let presenter: FavoritesPresenter
-    private var favoriteMovies: [String] = [
-        "Vingadores: Ultimato",
-        "Coringa",
-        "Parasita",
-        "1917",
-        "Era uma Vez em... Hollywood",
-        "Pantera Negra",
-        "Oppenheimer",
-        "Barbie",
-    ]
+    private let localStorage: FavoritesLocalStorage
 
-    init(presenter: FavoritesPresenter) {
+    init(
+        presenter: FavoritesPresenter, localStorage: FavoritesLocalStorage = FavoritesLocalStorage()
+    ) {
         self.presenter = presenter
+        self.localStorage = localStorage
     }
 
     func handleLoadFavorites(request: Favorites.LoadFavorites.Request) {
+        let favorites = localStorage.getFavorites()
         presenter.presentFavorites(
-            response: Favorites.LoadFavorites.Response(movies: favoriteMovies))
+            response: Favorites.LoadFavorites.Response(movies: favorites))
     }
 
     func handleRemoveFavorite(request: Favorites.RemoveFavorite.Request) {
-        favoriteMovies.removeAll { $0 == request.movie }
+        localStorage.removeFavorite(movieId: request.movieId)
         presenter.presentRemovedFavorite(
-            response: Favorites.RemoveFavorite.Response(removedMovie: request.movie))
+            response: Favorites.RemoveFavorite.Response(removedMovieId: request.movieId))
     }
 
     func handleClearFavorites(request: Favorites.ClearFavorites.Request) {
-        favoriteMovies.removeAll()
+        localStorage.clearFavorites()
         presenter.presentClearedFavorites(response: Favorites.ClearFavorites.Response())
     }
 
     func handleShareFavorites(request: Favorites.ShareFavorites.Request) {
+        let favorites = localStorage.getFavorites()
         presenter.presentSharedFavorites(
-            response: Favorites.ShareFavorites.Response(movies: favoriteMovies))
+            response: Favorites.ShareFavorites.Response(movies: favorites))
     }
 }

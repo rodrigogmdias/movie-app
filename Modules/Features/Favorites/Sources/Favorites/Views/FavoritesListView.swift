@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct FavoritesListView: View {
-    let movies: [String]
-    let onRemoveMovie: (String) -> Void
+    let movies: [FavoriteMovie]
+    let onRemoveMovie: (FavoriteMovie) -> Void
     let onShareList: () -> Void
     let onClearAll: () -> Void
 
@@ -12,7 +12,7 @@ struct FavoritesListView: View {
                 columns: Array(repeating: GridItem(.flexible()), count: 2),
                 spacing: 16
             ) {
-                ForEach(movies, id: \.self) { movie in
+                ForEach(movies) { movie in
                     FavoriteMovieCard(movie: movie, onRemove: onRemoveMovie)
                         .transition(
                             .asymmetric(
@@ -35,7 +35,11 @@ struct FavoritesListView: View {
 struct FavoritesListView_Previews: PreviewProvider {
     static var previews: some View {
         FavoritesListView(
-            movies: ["Filme 1", "Filme 2", "Filme 3"],
+            movies: [
+                FavoriteMovie(id: 1, title: "Filme 1", coverImageUrl: nil),
+                FavoriteMovie(id: 2, title: "Filme 2", coverImageUrl: nil),
+                FavoriteMovie(id: 3, title: "Filme 3", coverImageUrl: nil),
+            ],
             onRemoveMovie: { _ in },
             onShareList: {},
             onClearAll: {}

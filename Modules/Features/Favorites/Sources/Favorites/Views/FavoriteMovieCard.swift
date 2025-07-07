@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct FavoriteMovieCard: View {
-    let movie: String
-    let onRemove: (String) -> Void
+    let movie: FavoriteMovie
+    let onRemove: (FavoriteMovie) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -11,15 +11,39 @@ struct FavoriteMovieCard: View {
                 .frame(height: 200)
                 .overlay(
                     VStack {
-                        Image(systemName: "film")
-                            .font(.system(size: 40))
-                            .foregroundColor(.white)
+                        if let coverImageUrl = movie.coverImageUrl,
+                            let url = URL(string: coverImageUrl)
+                        {
+                            AsyncImage(url: url) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            } placeholder: {
+                                VStack {
+                                    Image(systemName: "film")
+                                        .font(.system(size: 40))
+                                        .foregroundColor(.white)
 
-                        Text(movie)
-                            .font(.caption)
-                            .foregroundColor(.white)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 4)
+                                    Text(movie.title)
+                                        .font(.caption)
+                                        .foregroundColor(.white)
+                                        .multilineTextAlignment(.center)
+                                        .padding(.horizontal, 4)
+                                }
+                            }
+                        } else {
+                            VStack {
+                                Image(systemName: "film")
+                                    .font(.system(size: 40))
+                                    .foregroundColor(.white)
+
+                                Text(movie.title)
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.horizontal, 4)
+                            }
+                        }
                     }
                 )
                 .cornerRadius(12)
@@ -41,7 +65,7 @@ struct FavoriteMovieCard: View {
                 )
 
             VStack(alignment: .leading, spacing: 4) {
-                Text(movie)
+                Text(movie.title)
                     .font(.subheadline)
                     .fontWeight(.medium)
                     .foregroundColor(.primary)
@@ -73,7 +97,9 @@ struct FavoriteMovieCard: View {
 
 struct FavoriteMovieCard_Previews: PreviewProvider {
     static var previews: some View {
-        FavoriteMovieCard(movie: "Filme Exemplo") { _ in }
-            .frame(width: 180)
+        FavoriteMovieCard(movie: FavoriteMovie(id: 1, title: "Filme Exemplo", coverImageUrl: nil)) {
+            _ in
+        }
+        .frame(width: 180)
     }
 }

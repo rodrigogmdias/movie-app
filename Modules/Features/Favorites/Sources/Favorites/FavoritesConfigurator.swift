@@ -2,7 +2,8 @@
 public struct FavoritesConfigurator {
     public static func configure() -> FavoritesView {
         let presenter = FavoritesPresenter()
-        let interactor = FavoritesInteractor(presenter: presenter)
+        let localStorage = FavoritesLocalStorage()
+        let interactor = FavoritesInteractor(presenter: presenter, localStorage: localStorage)
         let view = FavoritesView(
             interactor: interactor, viewState: FavoritesView.ViewState())
 

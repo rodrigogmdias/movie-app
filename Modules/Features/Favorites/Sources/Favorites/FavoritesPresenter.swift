@@ -16,7 +16,7 @@ class FavoritesPresenter: FavoritesPresenting {
 
     func presentRemovedFavorite(response: Favorites.RemoveFavorite.Response) {
         display?.displayRemovedFavorite(
-            viewModel: Favorites.RemoveFavorite.ViewModel(removedMovie: response.removedMovie))
+            viewModel: Favorites.RemoveFavorite.ViewModel(removedMovieId: response.removedMovieId))
     }
 
     func presentClearedFavorites(response: Favorites.ClearFavorites.Response) {
