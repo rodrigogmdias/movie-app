@@ -29,7 +29,7 @@ O projeto utiliza uma arquitetura modular baseada em Clean Architecture e VIP:
 - **MovieDetail** - Detalhes dos filmes
 
 ### 🎯 Padrões Utilizados
-- **VIPER** - View, Interactor, Presenter, Entity, Router
+- **VIP** - View, Interactor, Presenter
 - **Swift Package Manager** - Gerenciamento de dependências
 - **SwiftUI** - Interface do usuário
 - **Combine** - Programação reativa
