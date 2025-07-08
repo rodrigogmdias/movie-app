@@ -32,9 +32,7 @@ import Testing
     await MainActor.run {
         let viewState = CatalogView.ViewState()
         let movies = [
-            Movie(
-                id: 1, title: "Test Movie", overview: "Test Overview", releaseDate: "2023-01-01",
-                posterPath: "/test.jpg")
+            Movie.mock(id: 1, title: "Test Movie", overview: "Test Overview")
         ]
         let viewModel = Catalog.DidLoadPopularMovies.ViewModel(movies: movies, status: .loaded)
 

@@ -17,9 +17,7 @@ import Testing
     presenter.display = mockDisplay
 
     let movies = [
-        Movie(
-            id: 1, title: "Test Movie", overview: "Test Overview", releaseDate: "2023-01-01",
-            posterPath: "/test.jpg")
+        Movie.mock(id: 1, title: "Test Movie", overview: "Test Overview")
     ]
     let viewModel = Catalog.DidLoadPopularMovies.ViewModel(movies: movies, status: .loaded)
 
@@ -39,9 +37,7 @@ import Testing
     // display is nil by default
 
     let movies = [
-        Movie(
-            id: 1, title: "Test Movie", overview: "Test Overview", releaseDate: "2023-01-01",
-            posterPath: "/test.jpg")
+        Movie.mock(id: 1, title: "Test Movie", overview: "Test Overview")
     ]
     let viewModel = Catalog.DidLoadPopularMovies.ViewModel(movies: movies, status: .loaded)
 
@@ -55,9 +51,16 @@ import Testing
 final class MockCatalogDisplaying: CatalogDisplaying {
     var displayMoviesCalled = false
     var lastViewModel: Catalog.DidLoadPopularMovies.ViewModel?
+    var displaySearchResultsCalled = false
+    var lastSearchViewModel: Catalog.SearchMovies.ViewModel?
 
     func displayMovies(viewModel: Catalog.DidLoadPopularMovies.ViewModel) {
         displayMoviesCalled = true
         lastViewModel = viewModel
+    }
+
+    func displaySearchResults(viewModel: Catalog.SearchMovies.ViewModel) {
+        displaySearchResultsCalled = true
+        lastSearchViewModel = viewModel
     }
 }

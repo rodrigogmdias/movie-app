@@ -2,6 +2,7 @@ import Network
 
 enum CatalogEndpoint {
     case popular
+    case search(query: String, page: Int)
 }
 
 extension CatalogEndpoint: Endpoint {
@@ -25,6 +26,8 @@ extension CatalogEndpoint: Endpoint {
         switch self {
         case .popular:
             return "/3/movie/popular"
+        case .search:
+            return "/3/search/movie"
         }
     }
 
@@ -38,6 +41,13 @@ extension CatalogEndpoint: Endpoint {
             return [
                 "api_key": "052969f23bc6cb32135ec7d21bdea2ed",
                 "language": "pt-BR",
+            ]
+        case .search(let query, let page):
+            return [
+                "api_key": "052969f23bc6cb32135ec7d21bdea2ed",
+                "language": "pt-BR",
+                "query": query,
+                "page": "\(page)",
             ]
         }
     }

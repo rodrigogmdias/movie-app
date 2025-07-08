@@ -11,4 +11,8 @@ final class MockCatalogPresenting: CatalogPresenting {
     func presetingPopularMovies(viewModel: Catalog.DidLoadPopularMovies.ViewModel) {
         // Mock implementation - just receives the call
     }
+
+    func presentingSearchResults(viewModel: Catalog.SearchMovies.ViewModel) {
+        // Mock implementation - just receives the call
+    }
 }

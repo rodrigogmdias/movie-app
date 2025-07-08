@@ -4,6 +4,7 @@ import SwiftUI
 
 protocol CatalogInteracting {
     func handleOnAppear(request: Catalog.OnAppear.Request) async
+    func handleSearchMovies(request: Catalog.SearchMovies.Request) async
 }
 
 public struct CatalogView: View {
@@ -33,6 +34,39 @@ public struct CatalogView: View {
                     },
                     showMoreButtonAction: {
                         print("Ver mais filmes em destaque")
+                    },
+                    searchAction: { query in
+                        viewState.searchQuery = query
+                        if let interactor = interactor {
+                            Task {
+                                if query.isEmpty {
+                                    await interactor.handleSearchMovies(
+                                        request: Catalog.SearchMovies.Request(query: "", page: 1, isAppending: false)
+                                    )
+                                } else {
+                                    viewState.currentSearchQuery = query
+                                    await interactor.handleSearchMovies(
+                                        request: Catalog.SearchMovies.Request(query: query, page: 1, isAppending: false)
+                                    )
+                                }
+                            }
+                        }
+                    },
+                    loadMoreSearchAction: {
+                        if viewState.canLoadMore && !viewState.isSearching {
+                            viewState.currentSearchPage += 1
+                            if let interactor = interactor {
+                                Task {
+                                    await interactor.handleSearchMovies(
+                                        request: Catalog.SearchMovies.Request(
+                                            query: viewState.currentSearchQuery,
+                                            page: viewState.currentSearchPage,
+                                            isAppending: true
+                                        )
+                                    )
+                                }
+                            }
+                        }
                     }
                 )
             }
@@ -43,6 +77,13 @@ public struct CatalogView: View {
         @Published var isLoading: Bool = true
         @Published var popularMovies: [Movie] = []
         @Published var popularMoviesStatus: GalleryView.GalleryStatus = .loading
+        @Published var searchQuery: String = ""
+        @Published var searchResults: [Movie] = []
+        @Published var searchStatus: GalleryView.GalleryStatus = .loading
+        @Published var isSearching: Bool = false
+        @Published var canLoadMore: Bool = false
+        @Published var currentSearchPage: Int = 1
+        @Published var currentSearchQuery: String = ""
         
         func displayMovies(viewModel: Catalog.DidLoadPopularMovies.ViewModel) {
             popularMovies = viewModel.movies
@@ -59,19 +100,50 @@ public struct CatalogView: View {
                 isLoading = false
             }
         }
+        
+        func displaySearchResults(viewModel: Catalog.SearchMovies.ViewModel) {
+            if viewModel.isAppending {
+                searchResults.append(contentsOf: viewModel.movies)
+            } else {
+                searchResults = viewModel.movies
+            }
+            
+            canLoadMore = viewModel.canLoadMore
+            
+            switch viewModel.status {
+            case .idle:
+                searchStatus = .loaded
+                isSearching = false
+                searchResults = []
+                currentSearchPage = 1
+                currentSearchQuery = ""
+            case .loading:
+                searchStatus = .loading
+                isSearching = true
+            case .loaded:
+                searchStatus = .loaded
+                isSearching = false
+                if !viewModel.isAppending {
+                    currentSearchPage = 1
+                }
+            case .failure(let error):
+                searchStatus = .failure(error)
+                isSearching = false
+            }
+        }
     }
 }
 
 #Preview("CatalogView") {
-    CatalogView(interactor: nil, viewState: CatalogView.ViewState.example)
+    CatalogView(interactor: nil as (any CatalogInteracting)?, viewState: CatalogView.ViewState.example)
 }
 
 #Preview("CatalogView Loading") {
-    CatalogView(interactor: nil, viewState: CatalogView.ViewState.loadingExample)
+    CatalogView(interactor: nil as (any CatalogInteracting)?, viewState: CatalogView.ViewState.loadingExample)
 }
 
 #Preview("CatalogView Failure") {
-    CatalogView(interactor: nil, viewState: CatalogView.ViewState.failureExample)
+    CatalogView(interactor: nil as (any CatalogInteracting)?, viewState: CatalogView.ViewState.failureExample)
 }
 
 extension CatalogView.ViewState {
@@ -84,31 +156,76 @@ extension CatalogView.ViewState {
                 title: "Filme 1",
                 overview: "Descrição do filme 1",
                 releaseDate: "2023-01-01",
-                posterPath: "/8OP3h80BzIDgmMNANVaYlQ6H4Oc.jpg"),
+                posterPath: "/8OP3h80BzIDgmMNANVaYlQ6H4Oc.jpg",
+                backdropPath: "/backdrop1.jpg",
+                voteAverage: 8.5,
+                voteCount: 1500,
+                popularity: 85.2,
+                adult: false,
+                originalLanguage: "en",
+                originalTitle: "Movie 1",
+                genreIds: [28, 12]
+            ),
             Movie(
                 id: 2,
                 title: "Filme 2",
                 overview: "Descrição do filme 2",
                 releaseDate: "2023-02-01",
-                posterPath: "/m5NKltgQqqyoWJNuK18IqEGRG7J.jpg"),
+                posterPath: "/m5NKltgQqqyoWJNuK18IqEGRG7J.jpg",
+                backdropPath: "/backdrop2.jpg",
+                voteAverage: 7.8,
+                voteCount: 2300,
+                popularity: 72.1,
+                adult: false,
+                originalLanguage: "en",
+                originalTitle: "Movie 2",
+                genreIds: [18, 35]
+            ),
             Movie(
                 id: 3,
                 title: "Filme 3",
                 overview: "Descrição do filme 3",
                 releaseDate: "2023-03-01",
-                posterPath: "/yQGaui0bQ5Ai3KIFBB45nTeIqad.jpg"),
+                posterPath: "/yQGaui0bQ5Ai3KIFBB45nTeIqad.jpg",
+                backdropPath: "/backdrop3.jpg",
+                voteAverage: 9.1,
+                voteCount: 4500,
+                popularity: 95.7,
+                adult: false,
+                originalLanguage: "en",
+                originalTitle: "Movie 3",
+                genreIds: [16, 10751]
+            ),
             Movie(
                 id: 4,
                 title: "Filme 4",
                 overview: "Descrição do filme 4",
                 releaseDate: "2023-04-01",
-                posterPath: "/8OP3h80BzIDgmMNANVaYlQ6H4Oc.jpg"),
+                posterPath: "/8OP3h80BzIDgmMNANVaYlQ6H4Oc.jpg",
+                backdropPath: "/backdrop4.jpg",
+                voteAverage: 6.5,
+                voteCount: 890,
+                popularity: 45.3,
+                adult: false,
+                originalLanguage: "en",
+                originalTitle: "Movie 4",
+                genreIds: [27, 53]
+            ),
             Movie(
                 id: 5,
                 title: "Filme 5",
                 overview: "Descrição do filme 5",
                 releaseDate: "2023-05-01",
-                posterPath: "/m5NKltgQqqyoWJNuK18IqEGRG7J.jpg"),
+                posterPath: "/m5NKltgQqqyoWJNuK18IqEGRG7J.jpg",
+                backdropPath: "/backdrop5.jpg",
+                voteAverage: 7.2,
+                voteCount: 1200,
+                popularity: 62.8,
+                adult: false,
+                originalLanguage: "en",
+                originalTitle: "Movie 5",
+                genreIds: [878, 12]
+            ),
         ]
         viewState.popularMoviesStatus = .loaded
         return viewState

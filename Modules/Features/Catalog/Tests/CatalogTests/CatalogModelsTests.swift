@@ -8,9 +8,7 @@ import Testing
 @Test func testCatalogDidLoadPopularMoviesResponse() async throws {
     // Given
     let movies = [
-        Movie(
-            id: 1, title: "Test Movie", overview: "Test Overview", releaseDate: "2023-01-01",
-            posterPath: "/test.jpg")
+        Movie.mock(id: 1, title: "Test Movie", overview: "Test Overview")
     ]
 
     // When
@@ -24,9 +22,7 @@ import Testing
 @Test func testCatalogDidLoadPopularMoviesViewModelWithLoadingStatus() async throws {
     // Given
     let movies = [
-        Movie(
-            id: 1, title: "Test Movie", overview: "Test Overview", releaseDate: "2023-01-01",
-            posterPath: "/test.jpg")
+        Movie.mock(id: 1, title: "Test Movie", overview: "Test Overview")
     ]
 
     // When
@@ -41,9 +37,7 @@ import Testing
 @Test func testCatalogDidLoadPopularMoviesViewModelWithLoadedStatus() async throws {
     // Given
     let movies = [
-        Movie(
-            id: 1, title: "Test Movie", overview: "Test Overview", releaseDate: "2023-01-01",
-            posterPath: "/test.jpg")
+        Movie.mock(id: 1, title: "Test Movie", overview: "Test Overview")
     ]
 
     // When
