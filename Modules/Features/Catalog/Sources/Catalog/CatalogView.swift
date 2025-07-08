@@ -10,6 +10,7 @@ protocol CatalogInteracting {
 public struct CatalogView: View {
     let interactor: CatalogInteracting?
     @ObservedObject var viewState: ViewState
+    @State private var navigationPath = NavigationPath()
     
     init(interactor: CatalogInteracting?, viewState: ViewState) {
         self.interactor = interactor
@@ -23,14 +24,14 @@ public struct CatalogView: View {
     }
     
     public var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             if viewState.isLoading {
                 CatalogLoadingView()
             } else {
                 CatalogLoadedView(
                     viewState: viewState,
                     selectedMovieAction: { movie in
-                        print("Filme selecionado: \(movie.title)")
+                        navigationPath.append(movie)
                     },
                     showMoreButtonAction: {
                         print("Ver mais filmes em destaque")
@@ -70,6 +71,13 @@ public struct CatalogView: View {
                     }
                 )
             }
+        }
+        .navigationDestination(for: GalleryView.Movie.self) { movie in
+            MovieDetailConfigurator.configure(
+                id: movie.id,
+                title: movie.title,
+                coverImageUrl: movie.posterURL
+            )
         }
     }
     

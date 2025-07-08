@@ -3,7 +3,7 @@ import MovieDetail
 import SwiftUI
 
 struct CatalogLoadedView: View {
-    @ObservedObject var viewState: CatalogView.ViewState
+    let viewState: CatalogView.ViewState
     let selectedMovieAction: (GalleryView.Movie) -> Void
     let showMoreButtonAction: () -> Void
     let searchAction: (String) -> Void
