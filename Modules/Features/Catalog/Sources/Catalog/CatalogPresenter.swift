@@ -12,7 +12,8 @@ final class CatalogPresenter: CatalogPresenting {
     }
 
     func presentingTopRatedMovies(viewModel: Catalog.DidLoadTopRatedMovies.ViewModel) {
-        display?.displayTopRatedMovies(viewModel: .init(movies: viewModel.movies, status: viewModel.status))
+        display?.displayTopRatedMovies(
+            viewModel: .init(movies: viewModel.movies, status: viewModel.status))
     }
 
     func presentingSearchResults(viewModel: Catalog.SearchMovies.ViewModel) {

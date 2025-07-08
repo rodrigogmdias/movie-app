@@ -26,7 +26,7 @@ final class CatalogInteractor: CatalogInteracting {
             group.addTask { await self.loadTopRatedMovies() }
         }
     }
-    
+
     private func loadPopularMovies() async {
         do {
             let request = try await service.getPopularMovies()
@@ -37,7 +37,7 @@ final class CatalogInteractor: CatalogInteracting {
                 viewModel: .init(movies: [], status: .failure(error)))
         }
     }
-    
+
     private func loadTopRatedMovies() async {
         do {
             let request = try await service.getTopRatedMovies()

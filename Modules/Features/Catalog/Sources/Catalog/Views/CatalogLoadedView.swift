@@ -285,7 +285,10 @@ struct CatalogLoadedView: View {
                             }
                             .padding()
                         } else {
-                            ForEach(Array(viewState.topRatedMovies.prefix(5).enumerated()), id: \.element.id) { index, movie in
+                            ForEach(
+                                Array(viewState.topRatedMovies.prefix(5).enumerated()),
+                                id: \.element.id
+                            ) { index, movie in
                                 HStack {
                                     AsyncImage(url: movie.posterURL()) { image in
                                         image
@@ -393,7 +396,8 @@ struct CatalogLoadedView: View {
                 Movie(
                     id: 3,
                     title: "Pulp Fiction",
-                    overview: "As vidas de dois assassinos da máfia se entrelaçam com as de um boxeador.",
+                    overview:
+                        "As vidas de dois assassinos da máfia se entrelaçam com as de um boxeador.",
                     releaseDate: "1994-10-14",
                     posterPath: "/plnlrtBUULT0rh3Xsjmpubiso3L.jpg",
                     backdropPath: "/backdrop3.jpg",
@@ -408,7 +412,8 @@ struct CatalogLoadedView: View {
                 Movie(
                     id: 4,
                     title: "Clube da Luta",
-                    overview: "Um homem insatisfeito com sua vida forma um clube clandestino de luta.",
+                    overview:
+                        "Um homem insatisfeito com sua vida forma um clube clandestino de luta.",
                     releaseDate: "1999-10-15",
                     posterPath: "/bptfVGEQuv6vDTIMVCHjJ9Dz8PX.jpg",
                     backdropPath: "/backdrop4.jpg",
@@ -419,7 +424,7 @@ struct CatalogLoadedView: View {
                     originalLanguage: "en",
                     originalTitle: "Fight Club",
                     genreIds: [18]
-                )
+                ),
             ]
             mockViewState.topRatedMoviesStatus = .loaded
             return mockViewState

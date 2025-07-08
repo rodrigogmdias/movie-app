@@ -11,18 +11,18 @@ public struct CatalogView: View {
     let interactor: CatalogInteracting?
     @ObservedObject var viewState: ViewState
     @State private var navigationPath = NavigationPath()
-    
+
     init(interactor: CatalogInteracting?, viewState: ViewState) {
         self.interactor = interactor
         self.viewState = viewState
-        
+
         Task { [interactor] in
             await interactor?.handleOnAppear(
                 request: Catalog.OnAppear.Request()
             )
         }
     }
-    
+
     public var body: some View {
         NavigationStack(path: $navigationPath) {
             if viewState.isLoading {
@@ -42,12 +42,14 @@ public struct CatalogView: View {
                             Task {
                                 if query.isEmpty {
                                     await interactor.handleSearchMovies(
-                                        request: Catalog.SearchMovies.Request(query: "", page: 1, isAppending: false)
+                                        request: Catalog.SearchMovies.Request(
+                                            query: "", page: 1, isAppending: false)
                                     )
                                 } else {
                                     viewState.currentSearchQuery = query
                                     await interactor.handleSearchMovies(
-                                        request: Catalog.SearchMovies.Request(query: query, page: 1, isAppending: false)
+                                        request: Catalog.SearchMovies.Request(
+                                            query: query, page: 1, isAppending: false)
                                     )
                                 }
                             }
@@ -80,7 +82,7 @@ public struct CatalogView: View {
             )
         }
     }
-    
+
     final class ViewState: ObservableObject, CatalogDisplaying {
         @Published var isLoading: Bool = true
         @Published var popularMovies: [Movie] = []
@@ -94,10 +96,10 @@ public struct CatalogView: View {
         @Published var canLoadMore: Bool = false
         @Published var currentSearchPage: Int = 1
         @Published var currentSearchQuery: String = ""
-        
+
         func displayMovies(viewModel: Catalog.DidLoadPopularMovies.ViewModel) {
             popularMovies = viewModel.movies
-            
+
             switch viewModel.status {
             case .loading:
                 popularMoviesStatus = .loading
@@ -109,10 +111,10 @@ public struct CatalogView: View {
                 checkIfLoadingComplete()
             }
         }
-        
+
         func displayTopRatedMovies(viewModel: Catalog.DidLoadTopRatedMovies.ViewModel) {
             topRatedMovies = viewModel.movies
-            
+
             switch viewModel.status {
             case .loading:
                 topRatedMoviesStatus = .loading
@@ -124,22 +126,22 @@ public struct CatalogView: View {
                 checkIfLoadingComplete()
             }
         }
-        
+
         private func checkIfLoadingComplete() {
             if case .loading = popularMoviesStatus { return }
             if case .loading = topRatedMoviesStatus { return }
             isLoading = false
         }
-        
+
         func displaySearchResults(viewModel: Catalog.SearchMovies.ViewModel) {
             if viewModel.isAppending {
                 searchResults.append(contentsOf: viewModel.movies)
             } else {
                 searchResults = viewModel.movies
             }
-            
+
             canLoadMore = viewModel.canLoadMore
-            
+
             switch viewModel.status {
             case .idle:
                 searchStatus = .loaded
@@ -165,15 +167,20 @@ public struct CatalogView: View {
 }
 
 #Preview("CatalogView") {
-    CatalogView(interactor: nil as (any CatalogInteracting)?, viewState: CatalogView.ViewState.example)
+    CatalogView(
+        interactor: nil as (any CatalogInteracting)?, viewState: CatalogView.ViewState.example)
 }
 
 #Preview("CatalogView Loading") {
-    CatalogView(interactor: nil as (any CatalogInteracting)?, viewState: CatalogView.ViewState.loadingExample)
+    CatalogView(
+        interactor: nil as (any CatalogInteracting)?,
+        viewState: CatalogView.ViewState.loadingExample)
 }
 
 #Preview("CatalogView Failure") {
-    CatalogView(interactor: nil as (any CatalogInteracting)?, viewState: CatalogView.ViewState.failureExample)
+    CatalogView(
+        interactor: nil as (any CatalogInteracting)?,
+        viewState: CatalogView.ViewState.failureExample)
 }
 
 extension CatalogView.ViewState {
@@ -267,7 +274,7 @@ extension CatalogView.ViewState {
                 posterPath: "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
                 backdropPath: "/backdrop6.jpg",
                 voteAverage: 9.2,
-                voteCount: 1800000,
+                voteCount: 1_800_000,
                 popularity: 150.5,
                 adult: false,
                 originalLanguage: "en",
@@ -282,7 +289,7 @@ extension CatalogView.ViewState {
                 posterPath: "/m5NKltgQqqyoWJNuK18IqEGRG7J.jpg",
                 backdropPath: "/backdrop7.jpg",
                 voteAverage: 9.3,
-                voteCount: 2500000,
+                voteCount: 2_500_000,
                 popularity: 135.8,
                 adult: false,
                 originalLanguage: "en",
@@ -297,18 +304,18 @@ extension CatalogView.ViewState {
                 posterPath: "/yPisjyLweCl1tbgwgtzBCNCBle.jpg",
                 backdropPath: "/backdrop8.jpg",
                 voteAverage: 9.0,
-                voteCount: 1400000,
+                voteCount: 1_400_000,
                 popularity: 112.3,
                 adult: false,
                 originalLanguage: "en",
                 originalTitle: "Schindler's List",
                 genreIds: [18, 36, 10752]
-            )
+            ),
         ]
         viewState.topRatedMoviesStatus = .loaded
         return viewState
     }()
-    
+
     nonisolated(unsafe) static let loadingExample: CatalogView.ViewState = {
         let viewState = CatalogView.ViewState()
         viewState.isLoading = true
@@ -318,7 +325,7 @@ extension CatalogView.ViewState {
         viewState.topRatedMoviesStatus = .loading
         return viewState
     }()
-    
+
     nonisolated(unsafe) static let failureExample: CatalogView.ViewState = {
         let viewState = CatalogView.ViewState()
         viewState.isLoading = false
