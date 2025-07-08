@@ -250,25 +250,91 @@ struct CatalogLoadedView: View {
                             .font(.headline)
                             .padding(.horizontal)
 
-                        ForEach(0..<5, id: \.self) { index in
+                        if case .loading = viewState.topRatedMoviesStatus {
+                            ForEach(0..<5, id: \.self) { _ in
+                                HStack {
+                                    SkeletonView()
+                                        .frame(width: 60, height: 90)
+                                        .cornerRadius(8)
+
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        SkeletonView()
+                                            .frame(height: 16)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                                        SkeletonView()
+                                            .frame(height: 12)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                    }
+                                    Spacer()
+                                }
+                                .padding(.horizontal)
+                            }
+                        } else if case .failure = viewState.topRatedMoviesStatus {
                             HStack {
-                                Rectangle()
-                                    .fill(Color.gray.opacity(0.3))
-                                    .frame(width: 60, height: 90)
-                                    .cornerRadius(8)
-
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text("Filme \(index + 1)")
-                                        .font(.subheadline)
-                                        .foregroundColor(.primary)
-
-                                    Text("Descrição breve do filme.")
+                                Spacer()
+                                VStack(spacing: 8) {
+                                    Image(systemName: "exclamationmark.triangle")
+                                        .font(.title2)
+                                        .foregroundColor(.red)
+                                    Text("Erro ao carregar filmes")
                                         .font(.caption)
                                         .foregroundColor(.secondary)
                                 }
                                 Spacer()
                             }
-                            .padding(.horizontal)
+                            .padding()
+                        } else {
+                            ForEach(Array(viewState.topRatedMovies.prefix(5).enumerated()), id: \.element.id) { index, movie in
+                                HStack {
+                                    AsyncImage(url: movie.posterURL()) { image in
+                                        image
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                    } placeholder: {
+                                        Rectangle()
+                                            .fill(Color.gray.opacity(0.3))
+                                            .overlay(
+                                                Image(systemName: "film")
+                                                    .foregroundColor(.gray)
+                                            )
+                                    }
+                                    .frame(width: 60, height: 90)
+                                    .cornerRadius(8)
+
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(movie.title)
+                                            .font(.subheadline)
+                                            .foregroundColor(.primary)
+                                            .lineLimit(2)
+
+                                        HStack(spacing: 4) {
+                                            Image(systemName: "star.fill")
+                                                .foregroundColor(.yellow)
+                                                .font(.caption2)
+                                            Text(movie.formattedVoteAverage)
+                                                .font(.caption)
+                                                .foregroundColor(.secondary)
+                                        }
+
+                                        Text(movie.overview)
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                            .lineLimit(2)
+                                    }
+                                    Spacer()
+                                }
+                                .padding(.horizontal)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    selectedMovieAction(
+                                        GalleryView.Movie(
+                                            id: movie.id,
+                                            title: movie.title,
+                                            posterURL: movie.posterURL()
+                                        ))
+                                }
+                            }
                         }
                     }
                 }
@@ -323,6 +389,39 @@ struct CatalogLoadedView: View {
                 ),
             ]
             mockViewState.popularMoviesStatus = .loaded
+            mockViewState.topRatedMovies = [
+                Movie(
+                    id: 3,
+                    title: "Pulp Fiction",
+                    overview: "As vidas de dois assassinos da máfia se entrelaçam com as de um boxeador.",
+                    releaseDate: "1994-10-14",
+                    posterPath: "/plnlrtBUULT0rh3Xsjmpubiso3L.jpg",
+                    backdropPath: "/backdrop3.jpg",
+                    voteAverage: 8.9,
+                    voteCount: 2_100_000,
+                    popularity: 110.2,
+                    adult: false,
+                    originalLanguage: "en",
+                    originalTitle: "Pulp Fiction",
+                    genreIds: [80, 18]
+                ),
+                Movie(
+                    id: 4,
+                    title: "Clube da Luta",
+                    overview: "Um homem insatisfeito com sua vida forma um clube clandestino de luta.",
+                    releaseDate: "1999-10-15",
+                    posterPath: "/bptfVGEQuv6vDTIMVCHjJ9Dz8PX.jpg",
+                    backdropPath: "/backdrop4.jpg",
+                    voteAverage: 8.8,
+                    voteCount: 2_000_000,
+                    popularity: 95.8,
+                    adult: false,
+                    originalLanguage: "en",
+                    originalTitle: "Fight Club",
+                    genreIds: [18]
+                )
+            ]
+            mockViewState.topRatedMoviesStatus = .loaded
             return mockViewState
         }(),
         selectedMovieAction: { movie in

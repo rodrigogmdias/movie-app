@@ -2,6 +2,7 @@ import Network
 
 enum CatalogEndpoint {
     case popular
+    case topRated
     case search(query: String, page: Int)
 }
 
@@ -26,6 +27,8 @@ extension CatalogEndpoint: Endpoint {
         switch self {
         case .popular:
             return "/3/movie/popular"
+        case .topRated:
+            return "/3/movie/top_rated"
         case .search:
             return "/3/search/movie"
         }
@@ -38,6 +41,11 @@ extension CatalogEndpoint: Endpoint {
     var queryParams: [String: String]? {
         switch self {
         case .popular:
+            return [
+                "api_key": "052969f23bc6cb32135ec7d21bdea2ed",
+                "language": "pt-BR",
+            ]
+        case .topRated:
             return [
                 "api_key": "052969f23bc6cb32135ec7d21bdea2ed",
                 "language": "pt-BR",

@@ -11,6 +11,10 @@ final class CatalogService: Sendable {
         return try await networkService.sendRequest(endpoint: CatalogEndpoint.popular)
     }
 
+    func getTopRatedMovies() async throws -> MovieResponse {
+        return try await networkService.sendRequest(endpoint: CatalogEndpoint.topRated)
+    }
+
     func searchMovies(query: String, page: Int = 1) async throws -> MovieResponse {
         return try await networkService.sendRequest(
             endpoint: CatalogEndpoint.search(query: query, page: page))

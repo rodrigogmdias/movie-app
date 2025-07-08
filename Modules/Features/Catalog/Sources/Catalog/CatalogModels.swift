@@ -22,6 +22,25 @@ enum Catalog {
         }
     }
 
+    enum DidLoadTopRatedMovies {
+        struct Request {}
+
+        struct Response {
+            let movies: [Movie]
+        }
+
+        struct ViewModel {
+            enum Status {
+                case loading
+                case loaded
+                case failure(Error)
+            }
+
+            let movies: [Movie]
+            let status: Status
+        }
+    }
+
     enum SearchMovies {
         struct Request {
             let query: String

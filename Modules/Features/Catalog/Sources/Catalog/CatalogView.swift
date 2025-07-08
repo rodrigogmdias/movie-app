@@ -85,6 +85,8 @@ public struct CatalogView: View {
         @Published var isLoading: Bool = true
         @Published var popularMovies: [Movie] = []
         @Published var popularMoviesStatus: GalleryView.GalleryStatus = .loading
+        @Published var topRatedMovies: [Movie] = []
+        @Published var topRatedMoviesStatus: GalleryView.GalleryStatus = .loading
         @Published var searchQuery: String = ""
         @Published var searchResults: [Movie] = []
         @Published var searchStatus: GalleryView.GalleryStatus = .loading
@@ -99,14 +101,34 @@ public struct CatalogView: View {
             switch viewModel.status {
             case .loading:
                 popularMoviesStatus = .loading
-                isLoading = true
             case .loaded:
                 popularMoviesStatus = .loaded
-                isLoading = false
+                checkIfLoadingComplete()
             case .failure(let error):
                 popularMoviesStatus = .failure(error)
-                isLoading = false
+                checkIfLoadingComplete()
             }
+        }
+        
+        func displayTopRatedMovies(viewModel: Catalog.DidLoadTopRatedMovies.ViewModel) {
+            topRatedMovies = viewModel.movies
+            
+            switch viewModel.status {
+            case .loading:
+                topRatedMoviesStatus = .loading
+            case .loaded:
+                topRatedMoviesStatus = .loaded
+                checkIfLoadingComplete()
+            case .failure(let error):
+                topRatedMoviesStatus = .failure(error)
+                checkIfLoadingComplete()
+            }
+        }
+        
+        private func checkIfLoadingComplete() {
+            if case .loading = popularMoviesStatus { return }
+            if case .loading = topRatedMoviesStatus { return }
+            isLoading = false
         }
         
         func displaySearchResults(viewModel: Catalog.SearchMovies.ViewModel) {
@@ -236,6 +258,54 @@ extension CatalogView.ViewState {
             ),
         ]
         viewState.popularMoviesStatus = .loaded
+        viewState.topRatedMovies = [
+            Movie(
+                id: 6,
+                title: "O Poderoso Chefão",
+                overview: "Uma família do crime organizado luta para manter sua supremacia.",
+                releaseDate: "1972-03-24",
+                posterPath: "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
+                backdropPath: "/backdrop6.jpg",
+                voteAverage: 9.2,
+                voteCount: 1800000,
+                popularity: 150.5,
+                adult: false,
+                originalLanguage: "en",
+                originalTitle: "The Godfather",
+                genreIds: [18, 80]
+            ),
+            Movie(
+                id: 7,
+                title: "Um Sonho de Liberdade",
+                overview: "Dois homens presos formam uma amizade ao longo dos anos.",
+                releaseDate: "1994-09-23",
+                posterPath: "/m5NKltgQqqyoWJNuK18IqEGRG7J.jpg",
+                backdropPath: "/backdrop7.jpg",
+                voteAverage: 9.3,
+                voteCount: 2500000,
+                popularity: 135.8,
+                adult: false,
+                originalLanguage: "en",
+                originalTitle: "The Shawshank Redemption",
+                genreIds: [18, 80]
+            ),
+            Movie(
+                id: 8,
+                title: "A Lista de Schindler",
+                overview: "Um homem salva mais de mil judeus durante o Holocausto.",
+                releaseDate: "1993-12-15",
+                posterPath: "/yPisjyLweCl1tbgwgtzBCNCBle.jpg",
+                backdropPath: "/backdrop8.jpg",
+                voteAverage: 9.0,
+                voteCount: 1400000,
+                popularity: 112.3,
+                adult: false,
+                originalLanguage: "en",
+                originalTitle: "Schindler's List",
+                genreIds: [18, 36, 10752]
+            )
+        ]
+        viewState.topRatedMoviesStatus = .loaded
         return viewState
     }()
     
@@ -244,6 +314,8 @@ extension CatalogView.ViewState {
         viewState.isLoading = true
         viewState.popularMovies = []
         viewState.popularMoviesStatus = .loading
+        viewState.topRatedMovies = []
+        viewState.topRatedMoviesStatus = .loading
         return viewState
     }()
     
@@ -256,6 +328,13 @@ extension CatalogView.ViewState {
                 domain: "TestError",
                 code: 1,
                 userInfo: [NSLocalizedDescriptionKey: "Failed to load movies"])
+        )
+        viewState.topRatedMovies = []
+        viewState.topRatedMoviesStatus = .failure(
+            NSError(
+                domain: "TestError",
+                code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "Failed to load top rated movies"])
         )
         return viewState
     }()

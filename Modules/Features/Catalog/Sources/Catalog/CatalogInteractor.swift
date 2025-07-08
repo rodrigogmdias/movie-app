@@ -2,6 +2,7 @@ import Foundation
 
 protocol CatalogPresenting {
     func presetingPopularMovies(viewModel: Catalog.DidLoadPopularMovies.ViewModel)
+    func presentingTopRatedMovies(viewModel: Catalog.DidLoadTopRatedMovies.ViewModel)
     func presentingSearchResults(viewModel: Catalog.SearchMovies.ViewModel)
 }
 
@@ -18,16 +19,33 @@ final class CatalogInteractor: CatalogInteracting {
 
     func handleOnAppear(request: Catalog.OnAppear.Request) async {
         presenter.presetingPopularMovies(viewModel: .init(movies: [], status: .loading))
+        presenter.presentingTopRatedMovies(viewModel: .init(movies: [], status: .loading))
 
-        Task {
-            do {
-                let request = try await service.getPopularMovies()
-                presenter.presetingPopularMovies(
-                    viewModel: .init(movies: request.results, status: .loaded))
-            } catch {
-                presenter.presetingPopularMovies(
-                    viewModel: .init(movies: [], status: .failure(error)))
-            }
+        await withTaskGroup(of: Void.self) { group in
+            group.addTask { await self.loadPopularMovies() }
+            group.addTask { await self.loadTopRatedMovies() }
+        }
+    }
+    
+    private func loadPopularMovies() async {
+        do {
+            let request = try await service.getPopularMovies()
+            presenter.presetingPopularMovies(
+                viewModel: .init(movies: request.results, status: .loaded))
+        } catch {
+            presenter.presetingPopularMovies(
+                viewModel: .init(movies: [], status: .failure(error)))
+        }
+    }
+    
+    private func loadTopRatedMovies() async {
+        do {
+            let request = try await service.getTopRatedMovies()
+            presenter.presentingTopRatedMovies(
+                viewModel: .init(movies: request.results, status: .loaded))
+        } catch {
+            presenter.presentingTopRatedMovies(
+                viewModel: .init(movies: [], status: .failure(error)))
         }
     }
 
