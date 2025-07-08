@@ -8,18 +8,20 @@ protocol BottomNavigatorInteracting: AnyObject {
 
 public struct BottomNavigatorView: View {
     let interactor: BottomNavigatorInteracting?
+    let catalogView = CatalogConfigurator.configure()
+    let favoritesView = FavoritesConfigurator.configure()
+    
     @ObservedObject var viewState: ViewState
-    @State var selectedTab: BottomNavigator.Tab = .catalog
 
     public var body: some View {
-        TabView(selection: $selectedTab) {
-            CatalogConfigurator.configure()
+        TabView(selection: $viewState.selectedTab) {
+            catalogView
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
                 .tag(BottomNavigator.Tab.catalog)
 
-            FavoritesConfigurator.configure()
+            favoritesView
                 .tabItem {
                     Label("Favorites", systemImage: "heart.fill")
                 }
@@ -29,13 +31,12 @@ public struct BottomNavigatorView: View {
         .onReceive(
             NotificationCenter.default.publisher(for: NSNotification.Name("GoToHome"))
         ) { _ in
-            selectedTab = .catalog
-            // TODO: colocar a chamada do interactor aqui
+            interactor?.handleGoToTab(request: .init(tab: .catalog))
         }
     }
 
     final class ViewState: ObservableObject, BottomNavigatorDisplaying {
-        @State var selectedTab: BottomNavigator.Tab = .catalog
+        @Published var selectedTab: BottomNavigator.Tab = .catalog
 
         func displayGoToTab(viewModel: BottomNavigator.GoToTab.ViewModel) {
             selectedTab = viewModel.tab
