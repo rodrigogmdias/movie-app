@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 
+@available(macOS 10.15, *)
 public final class NetworkService: Networkable {
 
     public init() {}

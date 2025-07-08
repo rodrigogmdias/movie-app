@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 
+@available(macOS 10.15, *)
 public protocol Networkable: Sendable {
     func sendRequest<T: Decodable>(endpoint: Endpoint) async throws -> T
     func sendRequest<T: Decodable>(

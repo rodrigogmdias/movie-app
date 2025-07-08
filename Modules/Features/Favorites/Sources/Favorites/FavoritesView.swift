@@ -1,6 +1,8 @@
 import MovieDetail
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
 
 public protocol FavoritesInteracting: AnyObject {
     func handleLoadFavorites(request: Favorites.LoadFavorites.Request)
@@ -72,6 +74,7 @@ public struct FavoritesView: View {
     }
 
     private func shareList() {
+        #if canImport(UIKit)
         let movieTitles = viewState.favorites.map { "• \($0.title)" }.joined(separator: "\n")
         let shareText =
             "Confira meus filmes favoritos no app!\n\n\(movieTitles)\n\nBaixe o app para ver mais recomendações."
@@ -82,6 +85,7 @@ public struct FavoritesView: View {
         {
             rootVC.present(activityVC, animated: true, completion: nil)
         }
+        #endif
         interactor?.handleShareFavorites(request: Favorites.ShareFavorites.Request())
     }
 
