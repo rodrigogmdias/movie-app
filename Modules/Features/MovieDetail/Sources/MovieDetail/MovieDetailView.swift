@@ -35,22 +35,29 @@ public struct MovieDetailView: View {
         let newFavoriteStatus = interactor?.isFavorite() ?? false
         viewState.updateFavoriteStatus(newFavoriteStatus)
     }
-
+    
     public var body: some View {
         ZStack(alignment: .topLeading) {
-            if viewState.isLoading {
-                MovieDetailLoadingView(
-                    title: title,
-                    coverImageUrl: coverImageUrl
-                )
-            } else {
-                MovieDetailLoadedView(
-                    title: title,
-                    coverImageUrl: coverImageUrl,
-                    viewState: viewState,
-                    onFavoriteToggle: handleFavoriteToggle
-                )
+            ScrollView {
+                VStack(spacing: 0) {
+                    HeaderCoverImageView(coverImageUrl: coverImageUrl)
+                    
+                    if viewState.isLoading {
+                        MovieDetailLoadingView(
+                            title: title,
+                            coverImageUrl: coverImageUrl
+                        )
+                    } else {
+                        MovieDetailLoadedView(
+                            title: title,
+                            coverImageUrl: coverImageUrl,
+                            viewState: viewState,
+                            onFavoriteToggle: handleFavoriteToggle
+                        )
+                    }
+                }
             }
+            .coordinateSpace(name: "scrollView")
 
             Button(action: handleBackAction) {
                 HStack(spacing: 6) {
@@ -132,3 +139,4 @@ public struct MovieDetailView: View {
             string: "https://image.tmdb.org/t/p/w500/m5NKltgQqqyoWJNuK18IqEGRG7J.jpg")
     )
 }
+
